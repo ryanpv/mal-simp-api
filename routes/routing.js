@@ -14,7 +14,7 @@ const db = getFirestore();
 
 
 router.route('/').get(function (req, res) {
-  res.send('hello world, welcome to MAL SIMP');
+  res.send('hello world, welcome to MAL SIMP!!!');
 });
 
 router.route('/user/saved').get(function (req, res) {

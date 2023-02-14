@@ -12,7 +12,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://localhost:6969',
-    'https://mal-simplified.web.app/'
+    'https://mal-simplified.web.app',
+    'https://us-central1-mal-simplified-api.cloudfunctions.net/api'
   ],
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE' }));

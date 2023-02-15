@@ -6,6 +6,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const functions = require('firebase-functions')
 const port = 6969
+const router = express.Router();
 
 
 app.use(cors({ 

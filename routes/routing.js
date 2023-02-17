@@ -187,12 +187,13 @@ router.route('/get-mal-username').get(async function (req, res) {
     {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization':`Bearer ${tokenData.access_token}`}
+        'Authorization':`Bearer ${tokenData.access_token}`},
+        'Access-Control-Allow-Origin': '*'
     });
     const getMalUser = await malUserDetails;
-    console.log('mal username: ', getMalUser.name)
+    console.log('mal username ', malUserDetails)
 
-    res.statues(200).send(getMalUser);
+    res.send(getMalUser);
 
   } catch (err) {
   console.log(err);
@@ -225,7 +226,7 @@ router.route('/user-list/:offset').get(verifyFirebaseToken, async function (req,
 
   try {
     const getUserAnimeList = await 
-      axios.get(`https://api.myanimelist.net/v2/users/@me/animelist?fields=mean,synopsis,status,videos,num_episodes&offset=${ offset }}&limit=8`, 
+      axios.get(`https://api.myanimelist.net/v2/users/@me/animelist?fields=mean,synopsis,status,videos,num_episodes&offset=${ offset }&limit=8`, 
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

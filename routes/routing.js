@@ -117,7 +117,6 @@ router.route('/seasonal-anime/:year/:season/:offset/').get(async function (req, 
 //////////////////////////////***AUTHORIZATION FOR MYANIMELIST***////////////////////////////////////////
 router.route('/create-challenge').get(getCode, async function (req, res) {
   const pkceCookie = req.cookies.pkce_cookie
-
   // console.log('***code challenge set***', pkceCookie);
   
   // await res.redirect('/callback') // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
@@ -138,6 +137,7 @@ router.route('/mal-auth').get(async function (req, res) {
   const malAuthCode = req.query.code;
   const malpkce = req.cookies.pkce_cookie;
   // console.log('challenge verified', malpkce.challenger);
+  console.log('mal auth params reached with: ', clientId);
 
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -153,17 +153,18 @@ router.route('/mal-auth').get(async function (req, res) {
   }
   
   try {
+    console.log('mal auth try statement reached');
     const malAuth = await axios.post(`https://myanimelist.net/v1/oauth2/token`, data, {headers: headers})
     const tokenReqRes = await malAuth.data
 
     res.cookie('mal_access_token', tokenReqRes, {
       httpOnly: 'true'
     })
-    // console.log('mal auth token', tokenReqRes);
+    console.log('mal auth token acquired');
 
     if (req.cookies.mal_access_token) {
       req.malCookie = tokenReqRes.access_token
-      console.log("mal auth reached")
+      console.log('mal token acquired with client')
     }
 
     res.end() //end request in order to access data
@@ -176,8 +177,9 @@ router.route('/mal-auth').get(async function (req, res) {
 })
 
 router.route('/get-mal-username').get(async function (req, res) {
+  console.log('get mal username route hit');
+  const tokenData = req.cookies.mal_access_token;
   try {
-    const tokenData = req.cookies.mal_access_token;
     const malUserDetails = await axios.get(`https://api.myanimelist.net/v2/users/@me?fields=anime_statistics`, 
     {
       headers: {

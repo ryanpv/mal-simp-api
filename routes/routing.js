@@ -185,7 +185,7 @@ router.route('/get-mal-username').get(async function (req, res) {
     });
     const getMalUser = await malUserDetails;
 
-    res.send(getMalUser.name);
+    res.send(getMalUser);
 
   } catch (err) {
   console.log(err);

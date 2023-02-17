@@ -120,8 +120,8 @@ router.route('/create-challenge').get(getCode, async function (req, res) {
 
   // console.log('***code challenge set***', pkceCookie);
   
-  await res.redirect('/callback') // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
-
+  // await res.redirect('/callback') // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
+  res.json(pkceCookie.challenger)
   
 });
 
@@ -171,6 +171,24 @@ router.route('/mal-auth').get(async function (req, res) {
   } catch (err) {
     console.log(err.response);
     res.send('verifier error')
+  }
+})
+
+router.route('/get-mal-username').get(async function (req, res) {
+  try {
+    const tokenData = req.cookies.mal_access_token;
+    const malUserDetails = await axios.get(`https://api.myanimelist.net/v2/users/@me?fields=anime_statistics`, 
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization':`Bearer ${tokenData.access_token}`}
+    });
+    const getMalUser = await malUserDetails;
+
+    res.send(getMalUser.name);
+
+  } catch (err) {
+  console.log(err);
   }
 })
 

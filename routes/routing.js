@@ -163,6 +163,7 @@ router.route('/mal-auth').get(async function (req, res) {
 
     if (req.cookies.mal_access_token) {
       req.malCookie = tokenReqRes.access_token
+      console.log("mal auth reached")
     }
 
     res.end() //end request in order to access data
@@ -184,6 +185,7 @@ router.route('/get-mal-username').get(async function (req, res) {
         'Authorization':`Bearer ${tokenData.access_token}`}
     });
     const getMalUser = await malUserDetails;
+    console.log('mal username: ', getMalUser.name)
 
     res.send(getMalUser);
 

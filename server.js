@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require("cors");
+const cors = require("cors")
 const app = express();
 const dotenv = require("dotenv");
 require('dotenv').config();
@@ -10,7 +10,15 @@ const router = express.Router();
 
 
 app.use(cors({ 
-  origin: true,
+  // origin: true,
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:6969',
+    'https://mal-simplified.web.app',
+    'https://us-central1-mal-simplified.cloudfunctions.net/api',
+    'https://myanimelist.net',
+    'https://api.myanimelist.net'
+  ],
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE' }));
 
@@ -20,9 +28,9 @@ app.use(require("./routes/routing.js"));
 
 
 
-app.listen(port, () => {
-  console.log(`server connected to port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`server connected to port ${port}`);
+// });
 
 exports.api = functions.https.onRequest(app)
 

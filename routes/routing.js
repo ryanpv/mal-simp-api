@@ -38,7 +38,7 @@ router.route('/animesearch/:offset/anime').get(async function (req, res) {
       headers: malClientHeader
     });
 
-    console.log(query);
+    // console.log(query);
     res.send(animeList.data);
 
   } catch (err) {
@@ -62,7 +62,7 @@ router.route('/anime/:id/:fields').get(async function (req, res) {
       headers: malClientHeader
     });
 
-    console.log('single anime query: ', animeDetail.data);
+    // console.log('single anime query: ', animeDetail.data);
     res.send(animeDetail.data);
 
   } catch (err) {
@@ -82,7 +82,7 @@ router.route('/anime-ranked/:rankType/:offset').get(async function (req, res) {
       headers: malClientHeader
     }); // includes an array in payload
 
-    console.log(JSON.stringify(animeRanking.data, null, 2));
+    // console.log(JSON.stringify(animeRanking.data, null, 2));
 
     res.send(animeRanking.data);
 
@@ -117,9 +117,13 @@ router.route('/seasonal-anime/:year/:season/:offset/').get(async function (req, 
 //////////////////////////////***AUTHORIZATION FOR MYANIMELIST***////////////////////////////////////////
 router.route('/create-challenge').get(getCode, async function (req, res) {
   const pkceCookie = req.cookies.pkce_cookie
-  console.log('***code challenge set***', pkceCookie);
-  
-  await res.redirect('/api/callback') // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
+  // console.log('***code challenge set***', pkceCookie);
+
+    // await res.redirect('/callback') 
+
+
+    await res.redirect('/api/callback') // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
+
   // res.json(pkceCookie.challenger)
   
 });
@@ -137,7 +141,7 @@ router.route('/mal-auth').post(async function (req, res) {
   const malAuthCode = req.query.code;
   const malpkce = req.cookies.pkce_cookie;
   // console.log('challenge verified', malpkce.challenger);
-  console.log('mal auth params reached with: ', clientId);
+  // console.log('mal auth params reached with: ', clientId);
 
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -155,19 +159,19 @@ router.route('/mal-auth').post(async function (req, res) {
   }
   
   try {
-    console.log('mal auth try statement reached');
+    // console.log('mal auth try statement reached');
     const malAuth = await axios.post(`https://myanimelist.net/v1/oauth2/token`, data, {headers: headers})
     const tokenReqRes = await malAuth.data
-    console.log('mal token response', tokenReqRes);
+    // console.log('mal token response', tokenReqRes);
 
     res.cookie('mal_access_token', tokenReqRes, {
       httpOnly: 'true'
     })
-    console.log('mal auth token acquired');
+    // console.log('mal auth token acquired');
 
     if (req.cookies.mal_access_token) {
       req.malCookie = tokenReqRes.access_token
-      console.log('mal token acquired with client')
+      // console.log('mal token acquired with client')
     }
 
     res.end() //end request in order to access data
@@ -181,19 +185,19 @@ router.route('/mal-auth').post(async function (req, res) {
 
 router.route('/get-mal-username').get(async function (req, res) {
   const tokenData = req.cookies.mal_access_token;
-  console.log('get mal username route hit', tokenData.access_token);
+  // console.log('get mal username route hit', tokenData.access_token);
   try {
-    const malUserDetails = await axios.get(`https://api.myanimelist.net/v2/users/@me?fields=anime_statistics`, 
+    const malUserDetails = await axios.get('https://api.myanimelist.net/v2/users/@me?fields=anime_statistics', 
     {
       headers: {
-        // 'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization':`Bearer ${tokenData.access_token}`},
         // 'Access-Control-Allow-Origin': '*'
     });
     const getMalUser = await malUserDetails;
-    console.log('mal username ', malUserDetails)
+    // console.log('mal username ', getMalUser.data)
 
-    res.send(getMalUser);
+    res.send(getMalUser.data);
 
   } catch (err) {
   console.log(err);
@@ -203,7 +207,7 @@ router.route('/get-mal-username').get(async function (req, res) {
 /////// CLEAR COOKIE TO REMOVE MAL TOKEN //////////////
 router.route('/clear-mal-cookie').get(async function (req, res) {
   res.clearCookie('mal_access_token');
-  console.log('cookie cleared');
+  // console.log('cookie cleared');
   res.end();
 })
 
@@ -221,8 +225,8 @@ router.route('/token-test').get(async function (req, res) {
 router.route('/user-list/:offset').get(verifyFirebaseToken, async function (req, res) {
   const tokenData = req.cookies.mal_access_token
   const offset = req.params.offset
-  console.log('MAL user list', tokenData);
-  console.log('req user', req.user);
+  // console.log('MAL user list', tokenData);
+  // console.log('req user', req.user);
 
   try {
     const getUserAnimeList = await 
@@ -299,7 +303,7 @@ router.route('/get-categories').get(verifyFirebaseToken, async function (req, re
     // const categoriesList = await allCategories.docs.map((category) => {return { categoryName: category.data().categoryName}});
     const categoriesList = await allCategories.docs.map((category) => category.data().categoryName);
 
-    console.log('category list: ', categoriesList);
+    // console.log('category list: ', categoriesList);
     res.send(categoriesList);
   } catch (err) {
     console.log('unable to retrieve category list: ', err);
@@ -424,7 +428,7 @@ router.route('/delete-category/:categoryName').delete(verifyFirebaseToken, async
 
 /////////// DELETE SAVED ANIME ////////////////////
 router.route('/remove-anime').delete(verifyFirebaseToken, cache(), async function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const deleteQuery = await db.collection('mal-simp')
       .where('userId', '==', req.user.uid)
@@ -456,7 +460,7 @@ router.route('/remove-anime').delete(verifyFirebaseToken, cache(), async functio
 /////////////// SEARCH SAVED ANIME ////////////////////////
 router.route('/saved-anime-search/:animeSearch').get(verifyFirebaseToken, async function (req, res) {
   try {
-    console.log(req.params.animeSearch);
+    // console.log(req.params.animeSearch);
     const animeSearch = await db.collection('mal-simp')
       .where('userId', '==', req.user.uid)
       .where('animeTitle', '>=', req.params.animeSearch)

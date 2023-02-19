@@ -28,9 +28,9 @@ app.use(require("./routes/routing.js"));
 
 
 
-// app.listen(port, () => {
-//   console.log(`server connected to port ${port}`);
-// });
+app.listen(port, () => {
+  console.log(`server connected to port ${port}`);
+});
 
 exports.api = functions.https.onRequest(app)
 

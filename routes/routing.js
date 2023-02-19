@@ -73,12 +73,12 @@ router.route('/anime/:id/:fields').get(async function (req, res) {
 
 // GET anime related to the 'RANKING' field
 router.route('/anime-ranked/:rankType/:offset').get(async function (req, res) {
-  const limit = req.params.limit;
   const offset = req.params.offset;
   const rankType = req.params.rankType // 'ranking' type values are fixed (ie. top anime)
+  const limit = rankType === 'airing' ? 5 : 8; // only returning 5 results for 'Top airing' page, all other pages return 8 results
   
   try {
-    const animeRanking = await axios.get(`https://api.myanimelist.net/v2/anime/ranking?ranking_type=${ rankType }&limit=8&offset=${ offset }&fields=pictures,status,mean,synopsis,num_episodes`, {
+    const animeRanking = await axios.get(`https://api.myanimelist.net/v2/anime/ranking?ranking_type=${ rankType }&limit=${ limit }&offset=${ offset }&fields=pictures,status,mean,synopsis,num_episodes`, {
       headers: malClientHeader
     }); // includes an array in payload
 
@@ -120,9 +120,13 @@ router.route('/create-challenge').get(getCode, async function (req, res) {
   // console.log('***code challenge set***', pkceCookie);
 
     // await res.redirect('/callback') 
-
-
-    await res.redirect('/api/callback') // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
+console.log(process.env.NODE_ENV);
+    // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
+    if(process.env.NODE_ENV === 'development') {
+      await res.redirect('/callback')
+    } else {
+      await res.redirect('/api/callback')
+    } 
 
   // res.json(pkceCookie.challenger)
   
@@ -153,8 +157,8 @@ router.route('/mal-auth').post(async function (req, res) {
     client_secret: clientSecret,
     grant_type: 'authorization_code',
     code: malAuthCode,
-    redirect_uri: 'https://mal-simplified.web.app/logcallback',
-    // redirect_uri: 'http://localhost:3000/logcallback',
+    // redirect_uri: 'https://mal-simplified.web.app/logcallback',
+    redirect_uri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/logcallback' : 'https://mal-simplified.web.app/logcallback',
     code_verifier: req.cookies.pkce_cookie.challenger,
   }
   
@@ -222,7 +226,7 @@ router.route('/token-test').get(async function (req, res) {
 
 ////////////////////////////GET USER LIST
 
-router.route('/user-list/:offset').get(verifyFirebaseToken, async function (req, res) {
+router.route('/user-list/:offset').get(async function (req, res) {
   const tokenData = req.cookies.mal_access_token
   const offset = req.params.offset
   // console.log('MAL user list', tokenData);
@@ -256,7 +260,7 @@ router.route("/user-recommendations/:offset").get(async function (req, res) {
   try {
       
       const getUserRecommendations = await
-      axios.get(`https://api.myanimelist.net/v2/anime/suggestions?limit=5&offset=${ offset }&fields=mean`, 
+      axios.get(`https://api.myanimelist.net/v2/anime/suggestions?limit=8&offset=${ offset }&fields=synopsis,mean,status,num_episodes`, 
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -264,7 +268,7 @@ router.route("/user-recommendations/:offset").get(async function (req, res) {
         }
       });
       
-      // console.log('recommendations ', getUserRecommendations.data);
+      // console.log('recommendations ', getUserRecommendations.data.data);
       res.send(getUserRecommendations.data)
 
   } catch (error) {

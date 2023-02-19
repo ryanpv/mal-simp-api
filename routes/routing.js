@@ -205,6 +205,7 @@ router.route('/get-mal-username').get(async function (req, res) {
 
   } catch (err) {
   console.log(err);
+  res.send('MAL access token not available. Login required.')
   }
 })
 

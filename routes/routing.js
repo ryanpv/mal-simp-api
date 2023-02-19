@@ -32,6 +32,7 @@ router.route('/animesearch/:offset/anime').get(async function (req, res) {
   // q is query (as string) 
   const query = req.query.q;
   const offset = req.params.offset
+  console.log(query);
 
   try {
     const animeList = await axios.get(`https://api.myanimelist.net/v2/anime?q=${ query }&offset=${ offset }&limit=15&fields=pictures,mean,synopsis`, {

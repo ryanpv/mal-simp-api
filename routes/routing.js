@@ -11,7 +11,7 @@ const malClientHeader = {
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 const db = getFirestore();
 
-
+// process.env.NODE_ENV = 'development'
 
 router.route('/').get(function (req, res) {
   res.send('hello world, welcome to MAL SIMP!!!');
@@ -121,7 +121,7 @@ router.route('/create-challenge').get(getCode, async function (req, res) {
   // console.log('***code challenge set***', pkceCookie);
 
     // await res.redirect('/callback') 
-console.log(process.env.NODE_ENV);
+console.log('ENV: ', process.env.NODE_ENV);
     // MUST BE REDIRECTED OTHERWISE MAP API CANNOT VERIFY CODE_CHALLENGE FOR WHATEVER REASON*****************
     if(process.env.NODE_ENV === 'development') {
       await res.redirect('/callback')
@@ -190,13 +190,13 @@ router.route('/mal-auth').post(async function (req, res) {
 
 router.route('/get-mal-username').get(async function (req, res) {
   const tokenData = req.cookies.mal_access_token;
-  // console.log('get mal username route hit', tokenData.access_token);
+  // console.log('get mal username route hit', tokenData);
   try {
     const malUserDetails = await axios.get('https://api.myanimelist.net/v2/users/@me?fields=anime_statistics', 
     {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization':`Bearer ${tokenData.access_token}`},
+        'Authorization':`Bearer ${ tokenData && tokenData.access_token }` },
         // 'Access-Control-Allow-Origin': '*'
     });
     const getMalUser = await malUserDetails;
@@ -205,7 +205,7 @@ router.route('/get-mal-username').get(async function (req, res) {
     res.send(getMalUser.data);
 
   } catch (err) {
-  console.log(err);
+  console.log({ 'error message': err.message, 'error data': err.response.data });
   res.send('MAL access token not available. Login required.')
   }
 })

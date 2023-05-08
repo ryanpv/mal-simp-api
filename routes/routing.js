@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getCode, verifyFirebaseToken } = require('../middleware/middleware')
+const { checkMalToken } = require('../middleware/mal_token_check')
 const cache = require('../middleware/routeCache')
 
 const { malCodeChallenge } = require("../controllers/mal-auth/mal_code_challenge.js");
@@ -60,8 +61,6 @@ router.route('/callback')
 router.route('/mal-auth')
   .post(getMalAccessToken);
 
-router.route('/get-mal-username')
-  .get(getMalUsername);
 
 /////// CLEAR COOKIE TO REMOVE MAL TOKEN //////////////
 router.route('/clear-mal-cookie')
@@ -79,15 +78,21 @@ router.route('/token-test')
     res.send(tokenData)
   })
 
-////////////////////////////GET USER LIST
+// ********** MAL AUTHORIZED ROUTES **********
+
+  ///////// MAL USERNAME /////////
+router.route('/get-mal-username')
+  .get(checkMalToken, getMalUsername);
+
+ //////////GET USER LIST
 
 router.route('/user-list/:offset')
-  .get(getMalSavedList);
+  .get(checkMalToken, getMalSavedList);
 
 ////////////////GET USER RECOMMENDATIONS////////////////////
 
 router.route("/user-recommendations/:offset")
-  .get(userRecommendations)
+  .get(checkMalToken, userRecommendations)
 
 
 // ********** FIRE STORE DATABASE ROUTES **********

@@ -1,6 +1,4 @@
-const express = require('express')
 const crypto = require('crypto');
-const admin = require('../firebase-config')
 const { getAuth } = require('firebase-admin/auth')
 
 
@@ -10,7 +8,7 @@ function dec2hex(dec) {
 const generateCodeVerifier = () => {
   var array = new Uint32Array(128);
   // var array = new Uint32Array(56 / 2);
-  const rando = crypto.webcrypto.getRandomValues(array);
+  // const rando = crypto.webcrypto.getRandomValues(array);
   // window.crypto.getRandomValues(array);
   return Array.from(array, dec2hex).join("");
 }
@@ -71,8 +69,7 @@ const verifyFirebaseToken = async (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1]
 
   try {
-    const decodeFirebaseToken = await getAuth().verifyIdToken(token).then((decodedToken) => req.user = decodedToken)
-
+    await getAuth().verifyIdToken(token).then((decodedToken) => req.user = decodedToken)
   } catch (err) {
     console.log(err);
   }

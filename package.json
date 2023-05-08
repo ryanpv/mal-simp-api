@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "start": "node server.js",
     "deploy": "export NODE_ENV=production && firebase deploy --only functions:api",
     "dev": "export NODE_ENV=development && nodemon server.js"
@@ -26,6 +27,7 @@
     "node": "16"
   },
   "devDependencies": {
+    "eslint": "^8.40.0",
     "nodemon": "^2.0.20"
   }
 }

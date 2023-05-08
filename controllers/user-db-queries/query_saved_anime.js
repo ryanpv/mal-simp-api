@@ -1,5 +1,4 @@
-const { getFirestore } = require('firebase-admin/firestore');
-const db = getFirestore();
+const { db } = require('../../firebase-config.js');
 
 // *** text search with firebase db not recommended - firebase suggests using third party search ***
 

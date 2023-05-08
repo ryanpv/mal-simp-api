@@ -1,4 +1,4 @@
-const { get } = require('axios')
+const { get } = require('axios');
 
 const getMalUsername = async (req, res) => {
   const malTokenData = req.cookies.mal_access_token;

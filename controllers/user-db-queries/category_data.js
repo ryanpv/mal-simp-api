@@ -1,8 +1,8 @@
-const { getFirestore } = require('firebase-admin/firestore');
-const db = getFirestore();
+const { db } = require('../../firebase-config.js');
 
 const getCategoryData = async (req, res) => {
   try {
+    console.time('data q')
     const categorySnapshot = await db.collection('mal-simp')
       .where('userId', '==', req.user.uid)
       .where('categoryName', '==', req.params.categoryName)
@@ -14,6 +14,7 @@ const getCategoryData = async (req, res) => {
 
     // const lastQueryItem = categorySnapshot.docs[categorySnapshot.docs.length -1] // last doc from previous query
     const snapReturn = categorySnapshot.docs.map((doc) => doc.data());
+    console.timeEnd('data q')
         // .then((snaps) => {return snaps.data()}); // get() method will return entire collection
     // const snapReturn = snapshot.get()
     //   .then((snap) => {

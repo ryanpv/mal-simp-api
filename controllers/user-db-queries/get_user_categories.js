@@ -1,5 +1,4 @@
-const { getFirestore } = require('firebase-admin/firestore');
-const db = getFirestore();
+const { db } = require('../../firebase-config.js');
 
 const fetchUserCategories = async (req, res) => {
   try {

@@ -3,10 +3,11 @@ const cors = require("cors")
 const app = express();
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
-const functions = require('firebase-functions')
-const port = 6969
+require('./firebase-config.js')
+const functions = require('firebase-functions');
+const port = 6969;
 
-
+process.env.NODE_ENV = 'dev' // change or comment out for PROD
 
 app.use(cors({ 
   // origin: true,
@@ -26,11 +27,14 @@ app.use(cookieParser());
 app.use(require("./routes/routing.js"));
 
 
+if (process.env.NODE_ENV === 'dev') {
+  app.listen(port, () => {
+    console.log(`server connected to port ${port}`);
+  });
+} else {
+  console.log('in prod');
+  exports.api = functions.https.onRequest(app)
+}
 
-app.listen(port, () => {
-  console.log(`server connected to port ${port}`);
-});
-
-exports.api = functions.https.onRequest(app)
 
 // https://myanimelist.net/apiconfig/references/api/v2#operation/anime_get

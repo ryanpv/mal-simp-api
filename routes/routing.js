@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { getCode, verifyFirebaseToken } = require('../middleware/middleware')
 const cache = require('../middleware/routeCache')
+
 const { malCodeChallenge } = require("../controllers/mal-auth/mal_code_challenge.js");
 const { getMalAccessToken } = require("../controllers/mal-auth/mal_access_token.js");
 const { getMalUsername } = require("../controllers/mal-user-data/mal_username.js");
@@ -21,7 +22,6 @@ const { deleteCategory } = require("../controllers/user-db-queries/delete_catego
 const { savedAnime } = require("../controllers/user-db-queries/query_saved_anime");
 const { getDbCollection } = require("../controllers/admin/retrieve_collection");
 
-// process.env.NODE_ENV = 'development' // change or comment out for PROD
 
 router.route('/').get(function (req, res) {
   res.send('hello world, welcome to the server for MAL SIMP!!!');

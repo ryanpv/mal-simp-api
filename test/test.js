@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'dev';
 
 const app = require('../server.js');
 const request = require('supertest');
-const {expect} = require('chai');
+const { expect } = require('chai');
 const { generateCodeChallengeFromVerifier } = require('../middleware/middleware.js')
 
 describe("GET home route", () => {

@@ -2,7 +2,6 @@ process.env.NODE_ENV = 'dev';
 
 const app = require('../server.js');
 const request = require('supertest');
-const sinon = require('sinon');
 const {expect} = require('chai');
 const { generateCodeChallengeFromVerifier } = require('../middleware/middleware.js')
 

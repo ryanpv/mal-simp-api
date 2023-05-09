@@ -66,16 +66,20 @@ const getCode = async (req, res, next) => {
 }
 
 const verifyFirebaseToken = async (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1]
-
   try {
+    const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
+
+    if (!token || token === undefined) {
+      res.status(401).send('Firebase token unavailable/invalid')
+    }
+
     await getAuth().verifyIdToken(token).then((decodedToken) => req.user = decodedToken)
   } catch (err) {
-    console.log(err);
+    res.status(401).send('Firebase token unavailable/invalid')
   }
   return next()
 
-}
+};
 
 // const getMalToken = async (req, res, next) => {
 //   const malCookie = req.cookies.mal_access_token
@@ -95,5 +99,7 @@ const verifyFirebaseToken = async (req, res, next) => {
 
 module.exports = {
   getCode,
-  verifyFirebaseToken
+  verifyFirebaseToken,
+  generateCodeVerifier,
+  generateCodeChallengeFromVerifier,
 }

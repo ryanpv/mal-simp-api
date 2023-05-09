@@ -25,7 +25,7 @@ const { getDbCollection } = require("../controllers/admin/retrieve_collection");
 
 
 router.route('/').get(function (req, res) {
-  res.send('hello world, welcome to the server for MAL SIMP!!!');
+  res.status(200).send('hello world, welcome to the server for MAL SIMP!!!');
 });
 
 // GET list of anime from https://api.myanimelist.net/v2/anime search query
@@ -51,11 +51,16 @@ router.route('/create-challenge')
   .get(getCode, malCodeChallenge);
 
 router.route('/callback')
-  .get(async function (req, res) { 
+  .get(function (req, res) { 
     const pkceAuth = req.cookies.pkce_cookie;
 
+    if (!pkceAuth) {
+      res.status(401).send('challenger does not exist.')
+    } else {
+      res.status(200).json(pkceAuth.challenger);
+    }
+
     // console.log('***redirected code***', pkceAuth.challenger);
-    res.json(pkceAuth.challenger);
   });
 
 router.route('/mal-auth')
@@ -80,6 +85,10 @@ router.route('/token-test')
 
 // ********** MAL AUTHORIZED ROUTES **********
 
+///// MAL TOKEN TEST /////
+router.route('/mal-token-test')
+  .get(checkMalToken, (req, res) => res.status(200).send('MAL token VERIFIED'));
+
   ///////// MAL USERNAME /////////
 router.route('/get-mal-username')
   .get(checkMalToken, getMalUsername);
@@ -97,6 +106,10 @@ router.route("/user-recommendations/:offset")
 
 // ********** FIRE STORE DATABASE ROUTES **********
 
+///// TEST ROUTE FOR FIREBASE TOKEN /////
+router.route('/firebase-token-test')
+  .get(verifyFirebaseToken, (req, res) => res.status(200).send('Token verification success!') )
+
 ////////// CREATE A CATEGORY //////////////
 router.route('/create-category')
   .post(verifyFirebaseToken, createSaveCategory);
@@ -111,11 +124,11 @@ router.route('/add-anime')
 
 //////// GET CATEGORY DATA ////////////////
 router.route('/get-content/:categoryName')
-  .get(verifyFirebaseToken, cache(300), getCategoryData);
+  .get(verifyFirebaseToken, cache(), getCategoryData);
 
 ///////////// CATEGORY DATA PAGINATION FOWARD ///////////////////
 router.route('/content-paginate-forward/:categoryName/:lastItem')
-  .get(verifyFirebaseToken, cache(300), categoryNextPage);
+  .get(verifyFirebaseToken, cache(), categoryNextPage);
 
 ////////// DELETE CATEGORY ///////////
 router.route('/delete-category/:categoryName')

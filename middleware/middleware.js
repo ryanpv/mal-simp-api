@@ -75,7 +75,7 @@ const verifyFirebaseToken = async (req, res, next) => {
     } else {
       req.session.destroy();
       res.cookie('userRole', 'null', { httpOnly: false });
-      res.status(401).send('No user verified')
+      res.status(401).send('Firebase token unavailable/invalid')
     }
   } catch (err) {
     res.status(401).send(err)

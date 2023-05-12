@@ -38,7 +38,7 @@ describe("CODE CHALLENGE TEST", () => {
 });
 
 describe("TEST FIREBASE TOKEN VERIFICATION ERROR HANDLER", () => {
-  it("Should return 401 if no token detected", async () => {
+  it("Should return 401 and error message if no token detected", async () => {
     await request(app)
       .get('/firebase-token-test')
       .expect(401)
@@ -48,7 +48,7 @@ describe("TEST FIREBASE TOKEN VERIFICATION ERROR HANDLER", () => {
 });
 
 describe("TEST MAL TOKEN MIDDLEWARE", () => {
-  it("Should return 401 ifor unavalable/invalid token", async () => {
+  it("Should return 401 and message for unavalable/invalid token", async () => {
     await request(app)
       .get('/mal-token-test')
       .expect(401)

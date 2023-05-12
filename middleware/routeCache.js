@@ -10,7 +10,7 @@ module.exports = duration => (req, res, next) => {
   //   console.error('Cannot cache non-GET methods');
   //   return next();
   // }
-  const key = req.originalUrl.replace(/%20/g, '') + req.user.uid
+  const key = req.originalUrl.replace(/%20/g, '') + req.session.uid
   const cachedResponse = cache.get(key);
   // cache.keys() to retreive cache keys
   

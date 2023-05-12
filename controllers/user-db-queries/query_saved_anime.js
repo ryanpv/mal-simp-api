@@ -5,7 +5,7 @@ const { db } = require('../../firebase-config.js');
 const savedAnime = async (req, res) => {
   try {
     const animeSearch = await db.collection('mal-simp')
-      .where('userId', '==', req.user.uid)
+      .where('userId', '==', req.session.uid)
       .where('animeTitle', '>=', req.params.animeSearch)
       .where('animeTitle', '<=', '\uf8ff')
       .get()

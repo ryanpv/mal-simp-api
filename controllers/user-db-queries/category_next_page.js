@@ -3,7 +3,7 @@ const { db } = require('../../firebase-config.js');
 const categoryNextPage = async (req, res) => {
   try {
     const categorySnapshot = await db.collection('mal-simp')
-      .where('userId', '==', req.user.uid)
+      .where('userId', '==', req.session.uid)
       .where('categoryName', '==', req.params.categoryName)
       .orderBy('animeTitle')
       .startAfter(req.params.lastItem)

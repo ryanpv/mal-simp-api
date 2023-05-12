@@ -4,7 +4,7 @@ const saveAnimeToCategory = async (req, res) => {
   try {
     const animeDoc = db.collection('mal-simp').doc() 
     await animeDoc.set({
-      userId: req.user.uid,
+      userId: req.session.uid,
       animeTitle: req.body.animeTitle,
       categoryName: req.body.categoryName, // req.body sends these details ofc
       animeId: req.body.animeId,

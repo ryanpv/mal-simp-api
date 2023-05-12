@@ -3,7 +3,7 @@ const { db } = require('../../firebase-config.js');
 const deleteSavedAnime = async (req, res) => {
   try {
     const deleteQuery = await db.collection('mal-simp')
-      .where('userId', '==', req.user.uid)
+      .where('userId', '==', req.session.uid)
       .where('categoryName', '==', req.body.categoryName)
       .where('animeId', '==', parseInt(req.body.animeId)) // animeId is posted as INT, ensure all reqs are parsed
       .limit(1) // limit 1 so user can only delete one doc at a time - solution for duplicate data

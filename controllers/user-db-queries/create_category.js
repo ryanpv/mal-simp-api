@@ -4,7 +4,7 @@ const createSaveCategory = async (req, res) => {
   try {
     const docRef = db.collection('anime-categories').doc();
     await docRef.set({
-      userId: req.user.uid,
+      userId: req.session.uid,
       categoryName: req.body.categoryName
     });
 

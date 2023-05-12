@@ -1,10 +1,9 @@
 const crypto = require('crypto');
-const { getAuth } = require('firebase-admin/auth')
-
 
 function dec2hex(dec) {
   return ("0" + dec.toString(16)).substr(-2);
 }
+
 const generateCodeVerifier = () => {
   var array = new Uint32Array(128);
   // var array = new Uint32Array(56 / 2);
@@ -67,34 +66,21 @@ const getCode = async (req, res, next) => {
 
 const verifyFirebaseToken = async (req, res, next) => {
   try {
-    const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
+    const isAuthenticated = req.session.isAuthenticated;
+    const userRole = req.cookies.userRole;
 
-    if (!token || token === undefined) {
-      res.status(401).send('Firebase token unavailable/invalid')
+    if (isAuthenticated && userRole === 'admin' || isAuthenticated && userRole === 'regUser') {
+      // user is fully authenticated
+      next();
+    } else {
+      req.session.destroy();
+      res.cookie('userRole', 'null', { httpOnly: false });
+      res.status(401).send('No user verified')
     }
-
-    await getAuth().verifyIdToken(token).then((decodedToken) => req.user = decodedToken)
   } catch (err) {
-    res.status(401).send('Firebase token unavailable/invalid')
+    res.status(401).send(err)
   }
-  return next()
-
 };
-
-// const getMalToken = async (req, res, next) => {
-//   const malCookie = req.cookies.mal_access_token
-//   try {
-//     req.mal_Cookie = malCookie
-
-//     console.log('sending middleware cookie');
-
-
-//     next()
-//   } catch (err) {
-//     console.log('malCookie unavail');
-//   }
-
-// }
 
 
 module.exports = {

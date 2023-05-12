@@ -3,7 +3,7 @@ const { db } = require('../../firebase-config.js');
 const fetchUserCategories = async (req, res) => {
   try {
     const userCategories = await db.collection('anime-categories')
-      .where('userId', '==', req.user.uid)
+      .where('userId', '==', req.session.uid)
       .orderBy('categoryName')
       .get();
 

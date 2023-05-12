@@ -3,11 +3,15 @@ const cors = require("cors")
 const app = express();
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 require('./firebase-config.js')
+const { db } = require('./firebase-config.js')
+
+const { FirestoreStore } = require('@google-cloud/connect-firestore')
 const functions = require('firebase-functions');
 const port = 6969;
 
-// process.env.NODE_ENV = 'dev' // change or comment out for PROD
+process.env.NODE_ENV = 'dev' // change or comment out for PROD
 
 app.use(cors({ 
   // origin: true,
@@ -24,6 +28,16 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false,
+  store: new FirestoreStore({
+    dataset: db,
+    kind: 'express-sessions' 
+  }),
+}));
+
 app.use(require("./routes/routing.js"));
 
 

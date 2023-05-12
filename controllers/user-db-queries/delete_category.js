@@ -3,7 +3,7 @@ const { db } = require('../../firebase-config.js');
 const deleteCategory = async (req, res) => {
   try {
     const deleteCategory = await db.collection('anime-categories') // deletes the category
-      .where('userId', '==', req.user.uid)
+      .where('userId', '==', req.session.uid)
       .where('categoryName', '==', req.params.categoryName);
 
     deleteCategory.get().then((query) => {
@@ -11,7 +11,7 @@ const deleteCategory = async (req, res) => {
     });
 
     const deleteCategoryContents = await db.collection('mal-simp') // deletes all anime saved to category
-      .where('userId', '==', req.user.uid)
+      .where('userId', '==', req.session.uid)
       .where('categoryName', '==', req.params.categoryName);
 
     deleteCategoryContents.get().then((query) => {

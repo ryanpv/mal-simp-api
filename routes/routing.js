@@ -3,16 +3,21 @@ const router = express.Router();
 const { getCode, verifyFirebaseToken } = require('../middleware/middleware')
 const { checkMalToken } = require('../middleware/mal_token_check')
 const cache = require('../middleware/routeCache')
+const sessionStart = require("../controllers/admin/user-session");
 
+// MAL AUTH
 const { malCodeChallenge } = require("../controllers/mal-auth/mal_code_challenge.js");
 const { getMalAccessToken } = require("../controllers/mal-auth/mal_access_token.js");
+// MAL USER DATA
 const { getMalUsername } = require("../controllers/mal-user-data/mal_username.js");
-const { searchMalAnime } = require("../controllers/mal-api-routes/search_mal.js");
-const { singleAnimeQuery } = require("../controllers/mal-api-routes/single_query_mal.js");
-const { animeRankingQuery } = require("../controllers/mal-api-routes/mal_ranking_type_query.js");
-const { querySeasonalAnime } = require("../controllers/mal-api-routes/seasonal_query.js");
 const { getMalSavedList } = require("../controllers/mal-user-data/mal_saved_list.js");
 const { userRecommendations } = require("../controllers/mal-user-data/mal_user_recommendations.js");
+// MAL DB QUERIES
+const { searchMalAnime } = require("../controllers/mal-api-routes/search_mal.js");
+const { singleAnimeQuery } = require("../controllers/mal-api-routes/single_query_mal.js");
+const { querySeasonalAnime } = require("../controllers/mal-api-routes/seasonal_query.js");
+const { animeRankingQuery } = require("../controllers/mal-api-routes/mal_ranking_type_query.js");
+// USER DB QUERIES
 const { createSaveCategory } = require("../controllers/user-db-queries/create_category.js");
 const { fetchUserCategories } = require("../controllers/user-db-queries/get_user_categories.js");
 const { saveAnimeToCategory } = require("../controllers/user-db-queries/save_anime.js");
@@ -21,7 +26,10 @@ const { categoryNextPage } = require("../controllers/user-db-queries/category_ne
 const { deleteSavedAnime } = require("../controllers/user-db-queries/delete_anime");
 const { deleteCategory } = require("../controllers/user-db-queries/delete_category");
 const { savedAnime } = require("../controllers/user-db-queries/query_saved_anime");
+// ADMIN ROUTES
 const { getDbCollection } = require("../controllers/admin/retrieve_collection");
+const setUserClaims = require("../controllers/admin/set-claims");
+
 
 
 router.route('/').get(function (req, res) {
@@ -71,14 +79,14 @@ router.route('/mal-auth')
 router.route('/clear-mal-cookie')
   .get(async function (req, res) {
     res.clearCookie('mal_access_token');
-  // console.log('cookie cleared');
+    res.cookie('userRole', 'null', { httpOnly: false })
+
     res.end();
   });
 
 router.route('/token-test')
   .get(async function (req, res) {
     const tokenData = req.cookies.mal_access_token
-    // console.log('test route', tokenData);
 
     res.send(tokenData)
   })
@@ -103,6 +111,13 @@ router.route('/user-list/:offset')
 router.route("/user-recommendations/:offset")
   .get(checkMalToken, userRecommendations)
 
+
+// ********** FIREBASE AUTH/SESSION ROUTES **********
+router.route('/login-session')
+  .post(setUserClaims, sessionStart)
+
+router.route('/set-claims')
+  .post(setUserClaims)
 
 // ********** FIRE STORE DATABASE ROUTES **********
 
@@ -139,11 +154,13 @@ router.route('/remove-anime')
   .delete(verifyFirebaseToken, cache(), deleteSavedAnime);
 
 /////////////// SEARCH SAVED ANIME ////////////////////////
-router.route('/saved-anime-search/:animeSearch').get(verifyFirebaseToken, savedAnime);
+router.route('/saved-anime-search/:animeSearch')
+  .get(verifyFirebaseToken, savedAnime);
 
 
 ///////// RETRIEVE ENTIRE COLLECTION //////////// *** NOT NECESSARY FOR USERS, ADMIN ONLY
-router.route('/get-entire-collection').get(getDbCollection);
+router.route('/get-entire-collection')
+  .get(getDbCollection);
 
 
 

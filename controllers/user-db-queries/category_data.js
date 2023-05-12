@@ -4,7 +4,7 @@ const getCategoryData = async (req, res) => {
   try {
     console.time('data q')
     const categorySnapshot = await db.collection('mal-simp')
-      .where('userId', '==', req.user.uid)
+      .where('userId', '==', req.session.uid)
       .where('categoryName', '==', req.params.categoryName)
       .orderBy('animeTitle')
       // .startAfter('title')

@@ -8,7 +8,7 @@ function dec2hex(dec) {
 const generateCodeVerifier = () => {
   var array = new Uint32Array(128);
   // var array = new Uint32Array(56 / 2);
-  const rando = crypto.webcrypto.getRandomValues(array);
+  crypto.webcrypto.getRandomValues(array);
   // window.crypto.getRandomValues(array);
   // console.log('array :' , typeof rando);
   console.log('arr buff :', Array.from(array, dec2hex).join(""));

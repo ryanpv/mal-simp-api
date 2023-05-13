@@ -2,7 +2,6 @@ const { get } = require('axios');
 
 const getMalSavedList = async (req, res) => {
   const malToken = req.cookies.mal_access_token
-  console.log('mal token', malToken);
   try {
     if (!malToken) {
       console.log('no mal token');

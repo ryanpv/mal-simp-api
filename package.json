@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha ./test/* --exit",
+    "test": "nyc mocha ./test/* --exit",
     "lint": "eslint .",
     "start": "node server.js",
     "deploy": "export NODE_ENV=production && firebase deploy --only functions:api",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "eslint": "^8.40.0",
     "nodemon": "^2.0.20",
+    "nyc": "^15.1.0",
     "sinon": "^15.0.4"
   }
 }

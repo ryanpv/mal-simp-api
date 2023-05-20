@@ -28,7 +28,7 @@ const { deleteCategory } = require("../controllers/user-db-queries/delete_catego
 const { savedAnime } = require("../controllers/user-db-queries/query_saved_anime");
 // ADMIN ROUTES
 const { getDbCollection } = require("../controllers/admin/retrieve_collection");
-const setUserClaims = require("../controllers/admin/set-claims");
+const { setUserClaims } = require("../controllers/admin/set-claims");
 
 
 

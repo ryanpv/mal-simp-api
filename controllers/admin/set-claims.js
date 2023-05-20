@@ -8,17 +8,25 @@ const setUserClaims = async (req, res, next) => {
     const user = verifiedToken
   
     if (!verifiedToken.isRegUser) {
+      console.log('is it reg user? : ', verifiedToken.isRegUser);
       await getAuth()
         .setCustomUserClaims(user.uid, { isRegUser: true });
 
-      next();
+      // next();
     } else {
+      console.log('is it reg user? : ', verifiedToken);
       next();
     }
 
   } catch (err) {
     res.status(400).send(err);
+    console.log(err);
+
   }
 };
 
-module.exports = setUserClaims
+const userClaims = {
+  setUserClaims: setUserClaims,
+}
+
+module.exports = userClaims

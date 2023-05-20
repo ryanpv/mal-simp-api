@@ -8,7 +8,7 @@ const {
   generateCodeChallengeFromVerifier, dec2hex, generateCodeVerifier, 
 } = require('../middleware/middleware.js');
 // const middlewareModule = require('../middleware/middleware.js')
-const service = require('../middleware/middleware.js')
+const middleware = require('../middleware/middleware.js')
 
 describe("CODE CHALLENGE TEST", () => {
 
@@ -58,22 +58,22 @@ describe('getCode() TEST SUITE FOR CODE CHALLENGE', () => {
     const res = {
       cookie,
     };
-    const spy1 = sinon.spy(service, "generateCodeChallengeFromVerifier");
-    const spy2 = sinon.spy(service, "generateCodeVerifier");
+    const spy1 = sinon.spy(middleware, "generateCodeChallengeFromVerifier");
+    const spy2 = sinon.spy(middleware, "generateCodeVerifier");
 
 
-    await service.getCode(req, res, next)
+    await middleware.getCode(req, res, next)
     expect(spy1.calledOnce).to.be.true;
     expect(spy2.calledOnce).to.be.true;
     expect(next.calledOnce).to.be.true;
   });
 
   it("getCode() fail branch should return status 500 and error string", async () => {
-    sinon.stub(service, "generateCodeVerifier").returns("") 
+    sinon.stub(middleware, "generateCodeVerifier").returns("") 
     const status = sinon.stub();
     const cookie = sinon.stub();
     const send = sinon.stub();
-    const mNext = sinon.stub(); 
+    const mNext = sinon.spy(); 
     const req = {};
     const res = {
       cookie,
@@ -82,7 +82,7 @@ describe('getCode() TEST SUITE FOR CODE CHALLENGE', () => {
     };
     status.returns(res)
   
-    await service.getCode(req, res, mNext)
+    await middleware.getCode(req, res, mNext)
 
     expect(res.status.calledWith(500)).to.be.true;
     expect(res.send.calledWith("CODE CHALLENGE ERROR")).to.be.true;

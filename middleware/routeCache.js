@@ -28,7 +28,6 @@ module.exports = duration => (req, res, next) => {
   // console.log('cache keys: ', cache.keys().filter(k => k.includes('/Watch%20Later')));
   // if it exists, send cache result
   if (cachedResponse) {
-    console.log(req.method, 'method');
     console.log(`Cache hit for user category data`);
     // console.log('cached response: ', cachedResponse);
     res.send(cachedResponse);

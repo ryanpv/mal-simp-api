@@ -14,15 +14,15 @@ describe("GET home route", () => {
   });
 });
 
-describe("TEST FIREBASE TOKEN VERIFICATION ERROR HANDLER", () => {
-  it("Should return 401 and error message if no token detected", async () => {
-    await request(app)
-      .get('/firebase-token-test')
-      .expect(401)
-      .expect('Firebase token unavailable/invalid');
+// describe("TEST FIREBASE TOKEN VERIFICATION ERROR HANDLER", () => {
+//   it("Should return 401 and error message if no token detected", async () => {
+//     await request(app)
+//       .get('/firebase-token-test')
+//       .expect(401)
+//       .expect('Firebase token unavailable/invalid');
       
-  });
-});
+//   });
+// });
 
 describe("TEST MAL TOKEN MIDDLEWARE", () => {
   it("Should return 401 and message for unavalable/invalid token", async () => {

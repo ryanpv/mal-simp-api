@@ -1,17 +1,17 @@
 const crypto = require('crypto');
 
 function dec2hex(dec) {
-  console.log('dex', ("0" + dec.toString(16)).substring(-2));
+  // console.log('dex', ("0" + dec.toString(16)).substring(-2));
   return ("0" + dec.toString(16)).substring(-2);
 }
 
-const generateCodeVerifier = () => {
+function generateCodeVerifier() {
   var array = new Uint32Array(128);
+  console.log('verifier code called');
   // var array = new Uint32Array(56 / 2);
   crypto.webcrypto.getRandomValues(array);
   // window.crypto.getRandomValues(array);
-  // console.log('array :' , typeof rando);
-  console.log('arr buff :', Array.from(array, dec2hex).join(""));
+  // console.log('arr buff :', typeof Array.from(array, dec2hex).join(""));
   return Array.from(array, dec2hex).join("");
 }
 
@@ -46,14 +46,17 @@ function base64urlencode(a) {
 }
 
 async function generateCodeChallengeFromVerifier(v) {
+  console.log('code challenge called');
   var hashed = await sha256(v);
   var base64encoded = base64urlencode(hashed);
+  // console.log('base64', typeof base64encoded);
   return base64encoded;
 }
 
 const getCode = async (req, res, next) => {
-  const verifier = await generateCodeVerifier();
-  const challenger = await generateCodeChallengeFromVerifier(verifier)
+  const verifier = await service.generateCodeVerifier();
+  // const challenger = ""
+  const challenger = await service.generateCodeChallengeFromVerifier(verifier)
   const pkceAuth = {
     verifier: verifier,
     challenger: challenger,
@@ -64,8 +67,13 @@ const getCode = async (req, res, next) => {
     // secure: true
   })
 
-  return next();
-}
+  if (verifier === "" || challenger === "") {
+    res.status(500).send("CODE CHALLENGE ERROR")
+    // return next()
+  } else {
+    return next();
+  }
+};
 
 const verifyFirebaseToken = async (req, res, next) => {
   try {
@@ -85,11 +93,12 @@ const verifyFirebaseToken = async (req, res, next) => {
   }
 };
 
-
-module.exports = {
-  dec2hex,
-  getCode,
-  verifyFirebaseToken,
-  generateCodeVerifier,
-  generateCodeChallengeFromVerifier,
+const service = {
+  dec2hex: dec2hex,
+  getCode: getCode,
+  verifyFirebaseToken: verifyFirebaseToken,
+  generateCodeVerifier: generateCodeVerifier,
+  generateCodeChallengeFromVerifier: generateCodeChallengeFromVerifier,
 }
+
+module.exports = service

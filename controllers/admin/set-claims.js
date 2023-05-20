@@ -12,9 +12,8 @@ const setUserClaims = async (req, res, next) => {
       await getAuth()
         .setCustomUserClaims(user.uid, { isRegUser: true });
 
-      // next();
+      next();
     } else {
-      console.log('is it reg user? : ', verifiedToken);
       next();
     }
 

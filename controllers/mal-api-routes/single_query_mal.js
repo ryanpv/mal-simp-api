@@ -1,8 +1,8 @@
-const { get } = require('axios');
+const axios = require('axios');
 
 const singleAnimeQuery = async (req, res) => {
   try {
-    const animeQuery = await get(`https://api.myanimelist.net/v2/anime/${ req.params.id }?fields=${ req.params.fields }`, {
+    const animeQuery = await axios.get(`https://api.myanimelist.net/v2/anime/${ req.params.id }?fields=${ req.params.fields }`, {
       headers: {
         'X-MAL-CLIENT-ID': process.env.MAL_CLIENT_ID
       }
@@ -10,8 +10,9 @@ const singleAnimeQuery = async (req, res) => {
 
     res.send(animeQuery.data)
   } catch (err) {
-    res.send({ 'error message': err.message, 'error data': err.response })
-  }
+    // console.log('real err', err);
+    res.status(400).send(err)
+    }
 };
 
 module.exports = {

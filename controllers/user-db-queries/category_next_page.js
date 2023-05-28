@@ -1,7 +1,6 @@
 const { db } = require('../../firebase-config.js');
 
 const categoryNextPage = async (req, res) => {
-  console.log('req :', req);
   try {
     const collectionName = process.env.NODE_ENV === 'test' ? 'test-mal-simp' : 'mal-simp'
     const categorySnapshot = await db.collection(collectionName)
@@ -14,7 +13,11 @@ const categoryNextPage = async (req, res) => {
 
     const snapReturn = categorySnapshot.docs.map((doc) => doc.data());
 
-    res.send(snapReturn);
+    if (snapReturn.length < 1) {
+      res.status(400).send('No data available.');
+    } else {
+      res.send(snapReturn);
+    }
   } catch (err) {
     console.log('error category next page');
     res.status(500).send(err)

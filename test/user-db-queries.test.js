@@ -20,6 +20,29 @@ describe('Testing for user-db-queries', () => {
     afterEach(() => {
       sinon.restore();
     });
+    it("Should return status 400 and send ''No data available.' if no data matched in db", async () => {
+      const req = {
+        session: {
+          uid: 'Non-ID',
+        },
+        params: {
+          categoryName: 'Mock Category',
+        },
+      };
+      const send = sinon.spy();
+      const status = sinon.stub();
+      const res = {
+        send,
+        status,
+      };
+      status.returns(res);
+
+      await categoryDataModule.getCategoryData(req, res);
+
+      expect(res.status.calledWith(400)).to.be.true;
+      expect(res.send.calledWith('No data available.')).to.be.true;
+    });
+
     it("getCategoryData() should res.send data retrieved from db", async () => {
       const req = {
         session: {
@@ -65,6 +88,30 @@ describe('Testing for user-db-queries', () => {
    });
 
   describe("Test suite for category_next_page", () => { 
+    it("Returns status 400 and sends 'No data available.'", async () => {
+      const req = {
+        session: {
+          uid: 'Non-ID',
+        },
+        params: {
+          categoryName: 'Mock Category',
+          lastItem: 'One Piece - Mock',
+        },
+      };
+      const send = sinon.spy();
+      const status = sinon.stub();
+      const res = {
+        send,
+        status,
+      };
+      status.returns(res);
+
+      await categoryNextPageModule.categoryNextPage(req, res);
+
+      expect(res.status.calledWith(400)).to.be.true;
+      expect(res.send.calledWith('No data available.')).to.be.true;
+    });
+
     it("categoryNextPage() should res.send paginated data", async () => {
       const req = {
         session: {
@@ -72,7 +119,7 @@ describe('Testing for user-db-queries', () => {
         },
         params: {
           categoryName: 'Adventure',
-          lastItem: '',
+          lastItem: 'One Piece - Mock',
         },
       };
       const send = sinon.stub();

@@ -6,12 +6,10 @@ const sinon = require('sinon');
 describe("ROUTE TESTS FOR MIDDLEWARE", () => {
   before(() => {
     process.env.NODE_ENV = 'dev'
-    console.log('set env check: ', process.env.NODE_ENV);
   });
 
   after(() => {
     delete process.env.NODE_ENV
-    console.log('delete env check: ', process.env.NODE_ENV);
   });
 
   describe("GET home route", () => {

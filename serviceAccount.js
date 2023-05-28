@@ -1,7 +1,7 @@
 module.exports = {
   type: process.env.FB_SERVICE_ACCOUNT_TYPE,
-  project_id: process.env.NODE_ENV === 'test' ? process.env.TEST_FB_SERVICE_ACCOUNT_PROJECT_ID : process.env.FB_SERVICE_ACCOUNT_PROJECT_ID,
-  project_id: process.env.NODE_ENV === 'test' ? 'test-mal-simplified' : 'mal-simplified'
+  // project_id: process.env.NODE_ENV === 'test' ? process.env.TEST_FB_SERVICE_ACCOUNT_PROJECT_ID : process.env.FB_SERVICE_ACCOUNT_PROJECT_ID,
+  project_id: process.env.NODE_ENV === 'test' ? 'test-mal-simplified' : 'mal-simplified',
   private_key_id: process.env.NODE_ENV === 'test' ? process.env.TEST_FB_SERVICE_ACCOUNT_PRIVATE_KEY_ID : process.env.FB_SERVICE_ACCOUNT_PRIVATE_KEY_ID,
   private_key: process.env.NODE_ENV === 'test' && process.env.TEST_FB_SERVICE_ACCOUNT_PRIVATE_KEY ? process.env.TEST_FB_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n')
     : process.env.FB_SERVICE_ACCOUNT_PRIVATE_KEY ? process.env.FB_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n') 

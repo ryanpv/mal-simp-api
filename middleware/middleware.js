@@ -1,17 +1,14 @@
 const crypto = require('crypto');
 
 function dec2hex(dec) {
-  // console.log('dex', ("0" + dec.toString(16)).substring(-2));
   return ("0" + dec.toString(16)).substring(-2);
 }
 
 function generateCodeVerifier() {
   var array = new Uint32Array(128);
-  console.log('verifier code called');
   // var array = new Uint32Array(56 / 2);
   crypto.webcrypto.getRandomValues(array);
   // window.crypto.getRandomValues(array);
-  // console.log('arr buff :', typeof Array.from(array, dec2hex).join(""));
   return Array.from(array, dec2hex).join("");
 }
 
@@ -28,8 +25,6 @@ function sha256(plain) {
 }
 
 function base64urlencode(a) {
-  // console.log('passed', a);
-
   const buffer = Buffer.from(`${a}`).toString('base64')
   // var str = "";
   // var bytes = new Uint8Array(a);
@@ -46,10 +41,9 @@ function base64urlencode(a) {
 }
 
 async function generateCodeChallengeFromVerifier(v) {
-  console.log('code challenge called');
   var hashed = await sha256(v);
   var base64encoded = base64urlencode(hashed);
-  // console.log('base64', typeof base64encoded);
+
   return base64encoded;
 }
 

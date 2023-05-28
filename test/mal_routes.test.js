@@ -4,6 +4,7 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised)
 const sinon = require('sinon');
 const axios = require('axios');
+// IMPORTED FUNCTIONS
 const malRoutesModule = require('../controllers/mal-api-routes/mal_ranking_type_query.js');
 const malSearch = require('../controllers/mal-api-routes/search_mal.js');
 const seasonalQueryModule = require('../controllers/mal-api-routes/seasonal_query.js');

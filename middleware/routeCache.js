@@ -15,7 +15,6 @@ module.exports = duration => (req, res, next) => {
   // cache.keys() to retreive cache keys
   
   if(req.method === "POST" || req.method === "DELETE") {
-    console.log(req.method , 'called');
     // const paramsConcat = req.params.categoryName.replace(/\s+/g, '')
     const categoryNameConcat = req.body.categoryName.replace(/\s+/g, '')
     const cacheFilter = cache.keys().filter(k => k.includes(categoryNameConcat));
@@ -28,13 +27,10 @@ module.exports = duration => (req, res, next) => {
   // console.log('cache keys: ', cache.keys().filter(k => k.includes('/Watch%20Later')));
   // if it exists, send cache result
   if (cachedResponse) {
-    console.log(`Cache hit for user category data`);
     // console.log('cached response: ', cachedResponse);
     res.send(cachedResponse);
   } else {
     // if not, replace .send with method to set response to cache
-
-    console.log(`Cache miss for user category data`);
     res.originalSend = res.send;
     res.send = body => {
       res.originalSend(body);

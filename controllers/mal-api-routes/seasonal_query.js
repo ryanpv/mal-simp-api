@@ -14,7 +14,6 @@ const querySeasonalAnime = async (req, res) => {
 
       res.send(seasonalQuery.data);
   } catch (err) {
-    console.log('func log', err.toString());
     // return err.message
     res.status(400).send(err.message)
   }

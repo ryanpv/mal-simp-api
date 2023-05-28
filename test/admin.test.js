@@ -177,6 +177,5 @@ describe('user-session testing', () => {
 
     expect(res.cookie.calledWith('userRole', 'null', { httpOnly: false })).to.be.true;
     expect(res.status.calledWith(200)).to.be.true;
-    
   });
 });

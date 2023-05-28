@@ -11,7 +11,6 @@ const searchMalAnime = async (req, res) => {
 
     res.send(animeSearchResults.data);
   } catch (err) {
-    // console.log('search err: ', err);
     res.status(400).send(err)
   }
 };

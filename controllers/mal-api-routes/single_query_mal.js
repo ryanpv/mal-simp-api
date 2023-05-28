@@ -10,7 +10,6 @@ const singleAnimeQuery = async (req, res) => {
 
     res.send(animeQuery.data)
   } catch (err) {
-    // console.log('real err', err);
     res.status(400).send(err)
     }
 };

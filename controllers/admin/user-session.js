@@ -25,7 +25,6 @@ const sessionStart = async (req, res) => {
 
     res.status(200).send('Session start success!');
   } catch (err) {
-    console.log(err);
     res.status(400).send(err);
   }
 };

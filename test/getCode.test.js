@@ -1,5 +1,3 @@
-process.env.NODE_ENV = 'dev';
-
 const app = require('../server.js');
 const request = require('supertest');
 const { expect } = require('chai');
@@ -9,6 +7,16 @@ const {
 } = require('../middleware/middleware.js');
 // const middlewareModule = require('../middleware/middleware.js')
 const middleware = require('../middleware/middleware.js')
+
+before(() => {
+  process.env.NODE_ENV = 'dev'
+  console.log('set env check: ', process.env.NODE_ENV);
+});
+
+after(() => {
+  delete process.env.NODE_ENV
+  console.log('delete env check: ', process.env.NODE_ENV);
+});
 
 describe("CODE CHALLENGE TEST", () => {
 

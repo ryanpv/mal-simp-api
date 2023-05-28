@@ -13,7 +13,6 @@ const animeRankingQuery = async (req, res) => {
       // console.log('module data: ', getAnimeRanking.data);
     res.send(getAnimeRanking.data);
   } catch (err) {
-    // console.log('catch err: ', err);
     res.status(400).send(err)
   }
 };

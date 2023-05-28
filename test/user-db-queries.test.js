@@ -132,7 +132,13 @@ describe('Testing for user-db-queries', () => {
 
       await categoryNextPageModule.categoryNextPage(req, res);
 
-      console.log('args', res.send.args[0]);
+      expect(res.send.args.flat(2)[0]).to.have.property('animeId');
+      expect(res.send.args.flat(2)[0]).to.have.property('mean');
+      expect(res.send.args.flat(2)[0]).to.have.property('num_episodes');
+      expect(res.send.args.flat(2)[0]).to.have.property('main_picture');
+      expect(res.send.args.flat(2)[0]).to.have.property('animeTitle');
+      expect(res.send.args.flat(2)[0]).to.have.property('categoryName');
+      expect(res.send.args.flat(2)[0]).to.not.have.property('userId');
     });
    });
  });

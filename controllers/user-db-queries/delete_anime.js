@@ -23,7 +23,7 @@ const deleteSavedAnime = async (req, res) => {
     res.status(200).send('Successfully removed anime');
   } catch (err) {
     console.log('err :', err);
-    res.send(err);
+    res.status(500).send(err);
   }
 };
 

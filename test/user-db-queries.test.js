@@ -7,6 +7,7 @@ const categoryDataModule = require('../controllers/user-db-queries/category_data
 const categoryNextPageModule = require('../controllers/user-db-queries/category_next_page.js');
 const createCategoryModule = require('../controllers/user-db-queries/create_category.js');
 const deleteAnimeModule = require('../controllers/user-db-queries/delete_anime.js');
+// const deleteCategoryModule = require('../controllers/user-db-queries/delete_category.js');
 
 describe('Testing for user-db-queries', () => { 
   beforeEach(() => {
@@ -297,6 +298,25 @@ describe('Testing for user-db-queries', () => {
       
       expect(res.status.calledWith(200)).to.be.true;
       expect(res.send.calledWith('Successfully removed anime')).to.be.true;
+    });
+
+    it("Caught error should send status 500 and err obj", async () => {
+      const req = {};
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+      const err = { errMsg: 'Failed attempt to delete anime' };
+
+      sinon.stub(db, 'collection').throws(err);
+
+      await deleteAnimeModule.deleteSavedAnime(req, res);
+
+      expect(res.status.calledWith(500)).to.be.true;
+      expect(res.send.calledWith(err)).to.be.true;
     });
   });
 

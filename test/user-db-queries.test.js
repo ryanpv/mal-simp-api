@@ -6,6 +6,7 @@ const { db } = require('../firebase-config.js');
 const categoryDataModule = require('../controllers/user-db-queries/category_data.js');
 const categoryNextPageModule = require('../controllers/user-db-queries/category_next_page.js');
 const createCategoryModule = require('../controllers/user-db-queries/create_category.js');
+const deleteAnimeModule = require('../controllers/user-db-queries/delete_anime.js');
 
 describe('Testing for user-db-queries', () => { 
   beforeEach(() => {
@@ -268,5 +269,35 @@ describe('Testing for user-db-queries', () => {
       expect(res.send.calledWith(err)).to.be.true;
     });
    });
+
+  describe("Test suite for deleting anime", () => {
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it("Should send status 200 and 'successfully removed anime'", async () => {
+      const req = {
+        session: {
+          uid: 'testId123',
+        },
+        body: {
+          categoryName: 'Adventure',
+          animeId: 21,
+        },
+      };
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+
+      await deleteAnimeModule.deleteSavedAnime(req, res);
+      
+      expect(res.status.calledWith(200)).to.be.true;
+      expect(res.send.calledWith('Successfully removed anime')).to.be.true;
+    });
+  });
 
  });

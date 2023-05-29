@@ -2,7 +2,8 @@ const { db } = require('../../firebase-config.js');
 
 const deleteSavedAnime = async (req, res) => {
   try {
-    const deleteQuery = await db.collection('mal-simp')
+    const collectionName = process.env.NODE_ENV === 'dev' ? 'test-mal-simp' : 'mal-simp'
+    const deleteQuery = await db.collection(collectionName)
       .where('userId', '==', req.session.uid)
       .where('categoryName', '==', req.body.categoryName)
       .where('animeId', '==', parseInt(req.body.animeId)) // animeId is posted as INT, ensure all reqs are parsed
@@ -19,8 +20,9 @@ const deleteSavedAnime = async (req, res) => {
 //   .get()
 
 //   const result = await deleteTitle.docs.map(doc => console.log('title: ', doc.data()))
-    res.send('successfully removed anime');
+    res.status(200).send('Successfully removed anime');
   } catch (err) {
+    console.log('err :', err);
     res.send(err);
   }
 };

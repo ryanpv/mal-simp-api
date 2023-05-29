@@ -22,7 +22,6 @@ const deleteSavedAnime = async (req, res) => {
 //   const result = await deleteTitle.docs.map(doc => console.log('title: ', doc.data()))
     res.status(200).send('Successfully removed anime');
   } catch (err) {
-    console.log('err :', err);
     res.status(500).send(err);
   }
 };

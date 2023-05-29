@@ -7,7 +7,7 @@ const categoryDataModule = require('../controllers/user-db-queries/category_data
 const categoryNextPageModule = require('../controllers/user-db-queries/category_next_page.js');
 const createCategoryModule = require('../controllers/user-db-queries/create_category.js');
 const deleteAnimeModule = require('../controllers/user-db-queries/delete_anime.js');
-// const deleteCategoryModule = require('../controllers/user-db-queries/delete_category.js');
+const deleteCategoryModule = require('../controllers/user-db-queries/delete_category.js');
 
 describe('Testing for user-db-queries', () => { 
   beforeEach(() => {
@@ -276,7 +276,7 @@ describe('Testing for user-db-queries', () => {
       sinon.restore();
     });
 
-    it("Should send status 200 and 'successfully removed anime'", async () => {
+    it("deleteSavedAnime() send status 200 and 'successfully removed anime'", async () => {
       const req = {
         session: {
           uid: 'testId123',
@@ -319,5 +319,30 @@ describe('Testing for user-db-queries', () => {
       expect(res.send.calledWith(err)).to.be.true;
     });
   });
+
+  describe("Test suite for delete_category", () => { 
+    it("deleteCategory() should return status 200 and send success string", async () => {
+      const req = {
+        session: {
+          uid: "testId123",
+        },
+        params: {
+          categoryName: "Adventure",
+        },
+      };
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+
+      await deleteCategoryModule.deleteCategory(req, res);
+
+      expect(res.status.calledWith(200)).to.be.true;
+      expect(res.send.calledWith("Category and its content successfully deleted")).to.be.true;
+    });
+   });
 
  });

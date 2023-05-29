@@ -2,7 +2,8 @@ const { db } = require('../../firebase-config.js');
 
 const createSaveCategory = async (req, res) => {
   try {
-    const docRef = db.collection('anime-categories').doc();
+    const collectionName = process.env.NODE_ENV === 'dev' ? 'test-anime-categories' : 'anime-categories'
+    const docRef = db.collection(collectionName).doc();
     await docRef.set({
       userId: req.session.uid,
       categoryName: req.body.categoryName

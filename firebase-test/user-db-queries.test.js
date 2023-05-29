@@ -5,14 +5,16 @@ const { db } = require('../firebase-config.js');
 // IMPORTED MODULES
 const categoryDataModule = require('../controllers/user-db-queries/category_data.js');
 const categoryNextPageModule = require('../controllers/user-db-queries/category_next_page.js');
+const createCategoryModule = require('../controllers/user-db-queries/create_category.js');
 
 describe('Testing for user-db-queries', () => { 
   beforeEach(() => {
-    process.env.NODE_ENV = 'test'
+    process.env.NODE_ENV = 'dev'
   });
   
   afterEach(() => {
     delete process.env.NODE_ENV
+    sinon.restore();
   });
 
   describe("Testing collection name for getCategoryData()", () => {
@@ -30,9 +32,12 @@ describe('Testing for user-db-queries', () => {
         },
       };
       const send = sinon.spy();
+      const status = sinon.stub();
       const res = {
         send,
+        status
       };
+      status.returns(res);
 
       const spy = sinon.spy(db, 'collection');
 
@@ -61,7 +66,6 @@ describe('Testing for user-db-queries', () => {
       const spy = sinon.spy(db, 'collection');
 
       await categoryDataModule.getCategoryData(req, res);
-      console.log('spy args: ', spy.args[0]);
 
       expect(spy.calledWith('mal-simp')).to.be.true;
     });
@@ -75,10 +79,10 @@ describe('Testing for user-db-queries', () => {
     it("Should return status 400 and send ''No data available.' if no data matched in db", async () => {
       const req = {
         session: {
-          uid: 'Non-ID',
+          uid: 'testId123',
         },
         params: {
-          categoryName: 'Mock Category',
+          categoryName: 'mockCategory',
         },
       };
       const send = sinon.spy();
@@ -105,9 +109,12 @@ describe('Testing for user-db-queries', () => {
         },
       };
       const send = sinon.spy();
+      const status = sinon.stub();
       const res = {
         send,
+        status,
       };
+      status.returns(res);
 
       await categoryDataModule.getCategoryData(req, res);
 
@@ -150,8 +157,8 @@ describe('Testing for user-db-queries', () => {
           uid: 'Non-ID',
         },
         params: {
-          categoryName: 'Mock Category',
-          lastItem: 'One Piece - Mock',
+          categoryName: 'Adventure',
+          lastItem: 'Mock item',
         },
       };
       const send = sinon.spy();
@@ -175,7 +182,7 @@ describe('Testing for user-db-queries', () => {
         },
         params: {
           categoryName: 'Adventure',
-          lastItem: '',
+          lastItem: 'Cromartie High School',
         },
       };
       const send = sinon.stub();
@@ -187,7 +194,6 @@ describe('Testing for user-db-queries', () => {
       status.returns(res);
 
       await categoryNextPageModule.categoryNextPage(req, res);
-      console.log('args: ', res.send.args[0]);
 
       expect(res.send.args.flat(2)[0]).to.have.property('animeId');
       expect(res.send.args.flat(2)[0]).to.have.property('mean');
@@ -216,4 +222,11 @@ describe('Testing for user-db-queries', () => {
       expect(res.send.calledWith(err)).to.be.true;
     });
    });
+  
+  describe("Test suite for category creation", () => { 
+    it("Successful category creation should res.send('Category creation successful')", async () => {
+
+    })
+   })
+
  });

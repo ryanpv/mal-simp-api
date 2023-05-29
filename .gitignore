@@ -4,3 +4,8 @@ Firebase.txt
 README.md
 firebaseAccount.js
 .nyc_output
+firestore-debug.log
+firebase-debug.log
+database-debug.log
+ui-debug.log
+.env.local

@@ -2,8 +2,9 @@ const { db } = require('../../firebase-config.js');
 
 const getCategoryData = async (req, res) => {
   try {
-    const collectionName = process.env.NODE_ENV === 'test' ? 'test-mal-simp' : 'mal-simp'
-    console.time('data q')
+    const collectionName = process.env.NODE_ENV === 'dev' ? 'test-mal-simp' : 'mal-simp'
+    // console.log('collection name: ');
+
     const categorySnapshot = await db.collection(collectionName)
       .where('userId', '==', req.session.uid)
       .where('categoryName', '==', req.params.categoryName)
@@ -15,7 +16,6 @@ const getCategoryData = async (req, res) => {
 
     // const lastQueryItem = categorySnapshot.docs[categorySnapshot.docs.length -1] // last doc from previous query
     const snapReturn = categorySnapshot.docs.map((doc) => doc.data());
-    console.timeEnd('data q')
         // .then((snaps) => {return snaps.data()}); // get() method will return entire collection
     // const snapReturn = snapshot.get()
     //   .then((snap) => {
@@ -29,6 +29,7 @@ const getCategoryData = async (req, res) => {
       res.send(snapReturn);
     }
   } catch (err) {
+    // console.log('category data err: ', err);
     res.status(500).send(err)
   }
 };

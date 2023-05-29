@@ -18,7 +18,6 @@ const userRecommendations = async (req, res) => {
       res.send(getUserRecommendations.data)
     }
   } catch (err) {
-    console.log('recc err: ', err);
     res.status(400).send({ 'error message': err.message, 'error data': err.response })
   }
 };

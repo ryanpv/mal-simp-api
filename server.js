@@ -12,7 +12,7 @@ const functions = require('firebase-functions');
 const port = 6969;
 
 // process.env.NODE_ENV = 'development' // change or comment out for PROD
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV = 'dev'
 
 
 app.use(cors({ 
@@ -43,7 +43,7 @@ app.use(session({
 app.use(require("./routes/routing.js"));
 
 
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
     app.listen(port, () => {
       console.log(`server connected to port ${port}`);
     });

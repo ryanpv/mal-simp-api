@@ -9,9 +9,10 @@ const createSaveCategory = async (req, res) => {
       categoryName: req.body.categoryName
     });
 
-    res.send('category creation successful');
+    res.send('Category creation successful');
   } catch (err) {
-    res.send(err)
+    console.log('creation err: ', err);
+    res.status(500).send(err);
   }
 };
 

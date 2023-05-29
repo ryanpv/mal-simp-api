@@ -224,9 +224,49 @@ describe('Testing for user-db-queries', () => {
    });
   
   describe("Test suite for category creation", () => { 
-    it("Successful category creation should res.send('Category creation successful')", async () => {
+    afterEach(() => {
+      sinon.restore();
+    });
 
-    })
-   })
+    it("Successful createSaveCategory() should res.send('Category creation successful')", async () => {
+      const req = {
+        session: {
+          uid: 'userId', 
+        },
+        body: {
+          categoryName: 'Comedy',
+        },
+      };
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+
+      await createCategoryModule.createSaveCategory(req, res);
+
+      expect(res.send.calledWith('Category creation successful')).to.be.true;
+    });
+
+    it("Caught error for createSaveCategory() should send status 500 and err obj", async () => {
+      const req = {};
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+      const err = { errMsg: "Failed to create category" };
+      sinon.stub(db, 'collection').throws(err);
+
+      await createCategoryModule.createSaveCategory(req,res);
+
+      expect(res.status.calledWith(500)).to.be.true;
+      expect(res.send.calledWith(err)).to.be.true;
+    });
+   });
 
  });

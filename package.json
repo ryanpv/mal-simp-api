@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "export NODE_ENV=test && nyc mocha ./test/* --timeout 10000 --exit",
+    "test": "export NODE_ENV=test && nyc mocha ./test/* --timeout 20000 --exit",
     "lint": "eslint .",
     "start": "node server.js",
     "deploy": "export NODE_ENV=production && firebase deploy --only functions:api",

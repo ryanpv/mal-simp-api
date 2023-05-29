@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "export NODE_ENV=dev && nyc mocha ./test/* --timeout 20000 --exit",
-    "firebase-test": "",
+    "firebase-test": "firebase emulators:exec --import=./dir 'npm run test'",
     "lint": "eslint .",
     "start": "node server.js",
     "deploy": "export NODE_ENV=production && firebase deploy --only functions:api",

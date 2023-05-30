@@ -343,6 +343,25 @@ describe('Testing for user-db-queries', () => {
       expect(res.status.calledWith(200)).to.be.true;
       expect(res.send.calledWith("Category and its content successfully deleted")).to.be.true;
     });
+
+    it("Caught error sends status 500 and err obj", async () => {
+      const req = {};
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+      const err = { errMsg: 'Failed attempt to delete category and its contents' };
+
+      sinon.stub(db, 'collection').throws(err);
+
+      await deleteCategoryModule.deleteCategory(req, res);
+
+      expect(res.status.calledWith(500)).to.be.true;
+      expect(res.send.calledWith(err)).to.be.true;
+    });
    });
 
  });

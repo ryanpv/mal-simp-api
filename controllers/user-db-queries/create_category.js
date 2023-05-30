@@ -11,7 +11,6 @@ const createSaveCategory = async (req, res) => {
 
     res.send('Category creation successful');
   } catch (err) {
-    console.log('creation err: ', err);
     res.status(500).send(err);
   }
 };

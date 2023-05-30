@@ -31,9 +31,9 @@ const saveAnimeToCategory = async (req, res) => {
     //     }
     //   })
 
-    res.send('saved entry to category')
+    res.status(200).send('Successfully saved entry to category')
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err);
   }
 };
 

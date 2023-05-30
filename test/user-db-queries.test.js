@@ -8,6 +8,8 @@ const categoryNextPageModule = require('../controllers/user-db-queries/category_
 const createCategoryModule = require('../controllers/user-db-queries/create_category.js');
 const deleteAnimeModule = require('../controllers/user-db-queries/delete_anime.js');
 const deleteCategoryModule = require('../controllers/user-db-queries/delete_category.js');
+const userCategoriesModule = require('../controllers/user-db-queries/get_user_categories.js');
+const saveAnimeModule = require('../controllers/user-db-queries/save_anime.js');
 
 describe('Testing for user-db-queries', () => { 
   beforeEach(() => {
@@ -321,6 +323,10 @@ describe('Testing for user-db-queries', () => {
   });
 
   describe("Test suite for delete_category", () => { 
+    afterEach(() => {
+      sinon.restore();
+    });
+
     it("deleteCategory() should return status 200 and send success string", async () => {
       const req = {
         session: {
@@ -363,5 +369,103 @@ describe('Testing for user-db-queries', () => {
       expect(res.send.calledWith(err)).to.be.true;
     });
    });
+
+  describe("Test suite for get_user_categories", () => {
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it("Should res.send data on successful db query", async () => {
+      const req = {
+        session: {
+          uid: "testId123",
+        },
+      };
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+
+      await userCategoriesModule.fetchUserCategories(req, res);
+
+      expect(res.send.args.flat(2)[0]).to.be.a.string;
+    });
+
+    it("Caught error should return status 500 and err obj", async () => {
+      const req = {};
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+      const err = { errMsg: 'Failed to fetch user categories' };
+      sinon.stub(db, 'collection').throws(err);
+
+      await userCategoriesModule.fetchUserCategories(req, res);
+
+      expect(res.status.calledWith(500)).to.be.true;
+      expect(res.send.calledWith(err)).to.be.true;
+    });
+  });
+
+  describe("Test suite for save_anime", () => {
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it("Should return status 200 and success string", async () => {
+      const req = {
+        session: {
+          uid: 'testId',
+        },
+        body: {
+          animeTitle: "Slam Dunk",
+          categoryName: "Watch Later",
+          animeId: 9999,
+          num_episodes: 101,
+          main_picture: {
+            large: "largePic.jpg",
+            medium: "medPic.jpg",
+          },
+          mean: 8.54
+        },
+      };
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+
+      await saveAnimeModule.saveAnimeToCategory(req, res);
+
+      expect(res.status.calledWith(200)).to.be.true;
+      expect(res.send.calledWith('Successfully saved entry to category')).to.be.true;
+    });
+
+    it("Caught error should return status 500 and err obj", async () => {
+      const req = {};
+      const status = sinon.stub();
+      const send = sinon.stub();
+      const res = {
+        status,
+        send,
+      };
+      status.returns(res);
+      const err = { errMsg: 'Failed to save anime' };
+      sinon.stub(db, 'collection').throws(err);
+
+      await saveAnimeModule.saveAnimeToCategory(req, res);
+
+      expect(res.status.calledWith(500)).to.be.true;
+      expect(res.send.calledWith(err)).to.be.true;
+    });
+  });
 
  });

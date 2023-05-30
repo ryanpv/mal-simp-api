@@ -25,7 +25,6 @@ const { getCategoryData } = require("../controllers/user-db-queries/category_dat
 const { categoryNextPage } = require("../controllers/user-db-queries/category_next_page");
 const { deleteSavedAnime } = require("../controllers/user-db-queries/delete_anime");
 const { deleteCategory } = require("../controllers/user-db-queries/delete_category");
-const { savedAnime } = require("../controllers/user-db-queries/query_saved_anime");
 // ADMIN ROUTES
 const { getDbCollection } = require("../controllers/admin/retrieve_collection");
 const { setUserClaims } = require("../controllers/admin/set-claims");
@@ -152,11 +151,6 @@ router.route('/delete-category/:categoryName')
 /////////// DELETE SAVED ANIME ////////////////////
 router.route('/remove-anime')
   .delete(verifyFirebaseToken, cache(), deleteSavedAnime);
-
-/////////////// SEARCH SAVED ANIME ////////////////////////
-router.route('/saved-anime-search/:animeSearch')
-  .get(verifyFirebaseToken, savedAnime);
-
 
 ///////// RETRIEVE ENTIRE COLLECTION //////////// *** NOT NECESSARY FOR USERS, ADMIN ONLY
 router.route('/get-entire-collection')

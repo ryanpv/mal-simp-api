@@ -2,7 +2,8 @@ const { db } = require('../../firebase-config.js');
 
 const fetchUserCategories = async (req, res) => {
   try {
-    const userCategories = await db.collection('anime-categories')
+    const categoryCollection = process.env.NODE_ENV === 'dev' ? 'test-anime-categories' : 'anime-categories'
+    const userCategories = await db.collection(categoryCollection)
       .where('userId', '==', req.session.uid)
       .orderBy('categoryName')
       .get();
@@ -11,7 +12,7 @@ const fetchUserCategories = async (req, res) => {
 
     res.send(categoryList);
   } catch (err) {
-    res.send(err)
+    res.status(500).send(err)
   }
 };
 

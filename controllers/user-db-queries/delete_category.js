@@ -20,10 +20,8 @@ const deleteCategory = async (req, res) => {
      query.forEach(doc => doc.ref.delete())
   });
 
-    console.log('delete succsesfully');
     res.status(200).send("Category and its content successfully deleted");
   } catch (err) {
-    console.log('error :', err);
     res.status(500).send(err);
   }
 };

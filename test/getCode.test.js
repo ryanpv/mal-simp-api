@@ -16,7 +16,7 @@ after(() => {
   delete process.env.NODE_ENV
 });
 
-describe("CODE CHALLENGE TEST", () => {
+describe("CODE CHALLENGE AND VERIFIER CREATION TEST SUITE", () => {
 
   it("return string of buffer - values should be mix of letters and numbers", async () => {
     const code_verifier = await generateCodeVerifier();
@@ -46,13 +46,16 @@ describe("CODE CHALLENGE TEST", () => {
       .expect(200, done)
     
   });
+
+  it("Should expect status 401 and string 'Challenger does not exist.' if cookie does not exist", (done) => {
+    request(app)
+      .get('/callback')
+      .expect(401)
+      .expect('Challenger does not exist.', done)
+  });
 });
 
 describe('getCode() TEST SUITE FOR CODE CHALLENGE', () => {
-  beforeEach(async () => {
-
-  });
-
   afterEach(() => {
     sinon.restore();
   });

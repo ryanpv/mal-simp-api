@@ -62,7 +62,7 @@ router.route('/callback')
     const pkceAuth = req.cookies.pkce_cookie;
 
     if (!pkceAuth) {
-      res.status(401).send('challenger does not exist.')
+      res.status(401).send('Challenger does not exist.')
     } else {
       res.status(200).json(pkceAuth.challenger);
     }

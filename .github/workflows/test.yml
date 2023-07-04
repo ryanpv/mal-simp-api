@@ -81,7 +81,7 @@ jobs:
     name: Deploy code
     runs-on: ubuntu-latest
 
-      steps:
+    steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 

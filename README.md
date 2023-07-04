@@ -20,6 +20,7 @@ To check out the live space, visit [Mal-Simplified](https://mal-simplified.web.a
 * 
 
 ## Technologies
+
 ### Front-end
 * ReactJS
 * Firebase - user authentication
@@ -34,8 +35,15 @@ To check out the live space, visit [Mal-Simplified](https://mal-simplified.web.a
 ## Future ideas/features
 * Search function for user's saved list
 * CRUD operations on user's MAL saved list
-* 
 
 ## Deployment (CI/CD pipeline)
+* Front-end is deployed through firebase-hosting
+* Back-end is deployed using firebase functions
+* Deployment is through github actions
+* Tests are run on the back-end code
+* Testing with mocha, chai, supertest, sinon
+* After test completes eslint is run
+* If all actions pass, then updated code is deployed to production with firebase deploy
 
 ## Run locally
+If anyone wishes to run this locally then start server with "npm run dev" and then client side with "npm run start". Please see package.json files for both for more scripts.

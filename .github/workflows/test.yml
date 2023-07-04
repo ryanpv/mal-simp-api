@@ -77,7 +77,7 @@ jobs:
           continue_on_error: false
 
   deploy:
-    needs: test
+    needs: lint
     name: Deploy code
     runs-on: ubuntu-latest
 

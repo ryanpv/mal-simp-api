@@ -43,7 +43,7 @@ app.use(session({
 app.use(require("./routes/routing.js"));
 
 
-if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
     app.listen(port, () => {
       console.log(`server connected to port ${port}`);
     });

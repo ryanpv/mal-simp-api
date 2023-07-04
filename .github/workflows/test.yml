@@ -85,13 +85,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with: 
-          node-version: 16
+      - name: Install latest NPM
+        run: npm i -g npm@latest
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
 
-      - name: Run deploy
+      - name: Install firebase tools
+        run: npm install -g firebase-tools
+
+      - name: Run tests
         run: npm run deploy

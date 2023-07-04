@@ -75,3 +75,12 @@ jobs:
         with:
           eslint: true
           continue_on_error: false
+
+  deploy:
+    needs: test
+    name: Deploy code
+    runs-on: ubuntu-latest
+
+      steps:
+      - name: run deploy
+        run: npm run deploy

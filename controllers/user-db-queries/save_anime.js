@@ -2,7 +2,8 @@ const { db } = require('../../firebase-config.js');
 
 const saveAnimeToCategory = async (req, res) => {
   try {
-    const animeDoc = db.collection('mal-simp').doc() 
+    const collectionName = process.env.NODE_ENV === 'dev' ? 'test-mal-simp' : 'mal-simp'
+    const animeDoc = db.collection(collectionName).doc() 
     await animeDoc.set({
       userId: req.session.uid,
       animeTitle: req.body.animeTitle,

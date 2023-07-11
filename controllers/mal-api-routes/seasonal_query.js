@@ -2,8 +2,8 @@ const axios = require('axios');
 
 const querySeasonalAnime = async (req, res) => {
   try { 
-    // have query require both year and season filters
-    if (!req.params.year || !req.params.season) throw new Error('Missing seasonal query parameters');
+    // have query require both year and season filters and must be of type Number
+    if (!req.params.year || !req.params.season || parseInt(req.params.year) === typeof NaN) throw new Error('Missing seasonal query parameters');
 
     const seasonalQuery = await 
       axios.get(`https://api.myanimelist.net/v2/anime/season/${ req.params.year }/${ req.params.season }?limit=8&offset=${ req.params.offset }&fields=num_episodes,mean,synopsis,status`, {

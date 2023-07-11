@@ -12,7 +12,7 @@ const functions = require('firebase-functions');
 const port = 6969;
 
 // process.env.NODE_ENV = 'development' // change or comment out for PROD
-// process.env.NODE_ENV = 'dev'
+process.env.NODE_ENV = 'dev'
 
 
 app.use(cors({ 

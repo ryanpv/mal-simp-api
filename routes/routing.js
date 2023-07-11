@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { getCode, verifyFirebaseToken } = require('../middleware/middleware')
-const { checkMalToken } = require('../middleware/mal_token_check')
-const cache = require('../middleware/routeCache')
+const { getCode, verifyFirebaseToken } = require('../middleware/middleware');
+const { checkMalToken } = require('../middleware/mal_token_check');
+const cache = require('../middleware/routeCache');
 const sessionStart = require("../controllers/admin/user-session");
+const { body, param } = require("express-validator");
 
 // MAL AUTH
 const { malCodeChallenge } = require("../controllers/mal-auth/mal_code_challenge.js");
@@ -113,10 +114,10 @@ router.route("/user-recommendations/:offset")
 
 // ********** FIREBASE AUTH/SESSION ROUTES **********
 router.route('/login-session')
-  .post(setUserClaims, sessionStart)
+  .post(setUserClaims, body('accessToken').notEmpty().escape(), sessionStart)
 
 router.route('/set-claims')
-  .post(setUserClaims)
+  .post(body('accessToken').notEmpty().escape(), setUserClaims)
 
 // ********** FIRE STORE DATABASE ROUTES **********
 
@@ -126,7 +127,7 @@ router.route('/firebase-token-test')
 
 ////////// CREATE A CATEGORY //////////////
 router.route('/create-category')
-  .post(verifyFirebaseToken, createSaveCategory);
+  .post(verifyFirebaseToken, body('categoryName').notEmpty().isString().escape().trim(), createSaveCategory);
 
 //////////// GET USERS CATEGORIES ////////////////////
 router.route('/get-categories')
@@ -146,7 +147,7 @@ router.route('/content-paginate-forward/:categoryName/:lastItem')
 
 ////////// DELETE CATEGORY ///////////
 router.route('/delete-category/:categoryName')
-  .delete(verifyFirebaseToken, deleteCategory);
+  .delete(verifyFirebaseToken, param('categoryName').escape().trim(), deleteCategory);
 
 /////////// DELETE SAVED ANIME ////////////////////
 router.route('/remove-anime')

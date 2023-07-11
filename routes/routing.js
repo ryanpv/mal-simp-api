@@ -4,7 +4,6 @@ const { getCode, verifyFirebaseToken } = require('../middleware/middleware');
 const { checkMalToken } = require('../middleware/mal_token_check');
 const cache = require('../middleware/routeCache');
 const sessionStart = require("../controllers/admin/user-session");
-const { body, param } = require("express-validator");
 
 // MAL AUTH
 const { malCodeChallenge } = require("../controllers/mal-auth/mal_code_challenge.js");
@@ -29,6 +28,14 @@ const { deleteCategory } = require("../controllers/user-db-queries/delete_catego
 // ADMIN ROUTES
 const { getDbCollection } = require("../controllers/admin/retrieve_collection");
 const { setUserClaims } = require("../controllers/admin/set-claims");
+// VALIDATION ROUTES
+const { validateSavedAnime } = require("../middleware/validators/validate-saved-anime.js");
+const { validateSession } = require("../middleware/validators/validate-session");
+const { validateCategoryCreate } = require("../middleware/validators/validate-category-create");
+const { validateCategoryContent } = require("../middleware/validators/validate-category-content");
+const { validatePagination } = require("../middleware/validators/validate-pagination");
+const { validateDeleteCategory } = require("../middleware/validators/validate-delete-category");
+const { validateDeleteAnime } = require("../middleware/validators/validate-delete-anime");
 
 
 
@@ -114,10 +121,10 @@ router.route("/user-recommendations/:offset")
 
 // ********** FIREBASE AUTH/SESSION ROUTES **********
 router.route('/login-session')
-  .post(setUserClaims, body('accessToken').notEmpty().escape(), sessionStart)
+  .post(validateSession, setUserClaims, sessionStart)
 
 router.route('/set-claims')
-  .post(body('accessToken').notEmpty().escape(), setUserClaims)
+  .post(validateSession, setUserClaims)
 
 // ********** FIRE STORE DATABASE ROUTES **********
 
@@ -127,7 +134,7 @@ router.route('/firebase-token-test')
 
 ////////// CREATE A CATEGORY //////////////
 router.route('/create-category')
-  .post(verifyFirebaseToken, body('categoryName').notEmpty().isString().escape().trim(), createSaveCategory);
+  .post(verifyFirebaseToken, validateCategoryCreate, createSaveCategory);
 
 //////////// GET USERS CATEGORIES ////////////////////
 router.route('/get-categories')
@@ -135,23 +142,23 @@ router.route('/get-categories')
 
 //////////// SAVE ANIME TO CATEGORY ////////////
 router.route('/add-anime')
-  .post(verifyFirebaseToken, cache(), saveAnimeToCategory);
+  .post(verifyFirebaseToken, validateSavedAnime, cache(), saveAnimeToCategory);
 
 //////// GET CATEGORY DATA ////////////////
 router.route('/get-content/:categoryName')
-  .get(verifyFirebaseToken, cache(), getCategoryData);
+  .get(verifyFirebaseToken, validateCategoryContent, cache(), getCategoryData);
 
 ///////////// CATEGORY DATA PAGINATION FOWARD ///////////////////
 router.route('/content-paginate-forward/:categoryName/:lastItem')
-  .get(verifyFirebaseToken, cache(), categoryNextPage);
+  .get(verifyFirebaseToken, validatePagination,cache(), categoryNextPage);
 
 ////////// DELETE CATEGORY ///////////
 router.route('/delete-category/:categoryName')
-  .delete(verifyFirebaseToken, param('categoryName').escape().trim(), deleteCategory);
+  .delete(verifyFirebaseToken, validateDeleteCategory, deleteCategory);
 
 /////////// DELETE SAVED ANIME ////////////////////
 router.route('/remove-anime')
-  .delete(verifyFirebaseToken, cache(), deleteSavedAnime);
+  .delete(verifyFirebaseToken, validateDeleteAnime ,cache(), deleteSavedAnime);
 
 ///////// RETRIEVE ENTIRE COLLECTION //////////// *** NOT NECESSARY FOR USERS, ADMIN ONLY
 router.route('/get-entire-collection')

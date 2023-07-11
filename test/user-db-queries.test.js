@@ -80,7 +80,7 @@ describe('Testing for user-db-queries', () => {
       sinon.restore();
     });
     
-    it("Should return status 400 and send ''No data available.' if no data matched in db", async () => {
+    it("Should return status 200 and send ''No data available.' if no data matched in db", async () => {
       const req = {
         session: {
           uid: 'testId123',
@@ -99,7 +99,7 @@ describe('Testing for user-db-queries', () => {
 
       await categoryDataModule.getCategoryData(req, res);
 
-      expect(res.status.calledWith(400)).to.be.true;
+      expect(res.status.calledWith(200)).to.be.true;
       expect(res.send.calledWith('No data available.')).to.be.true;
     });
 

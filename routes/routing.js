@@ -36,6 +36,7 @@ const { validateCategoryContent } = require("../middleware/validators/validate-c
 const { validatePagination } = require("../middleware/validators/validate-pagination");
 const { validateDeleteCategory } = require("../middleware/validators/validate-delete-category");
 const { validateDeleteAnime } = require("../middleware/validators/validate-delete-anime");
+const disableUser = require("../controllers/admin/disable-user");
 
 
 
@@ -120,12 +121,17 @@ router.route("/user-recommendations/:offset")
 
 
 // ********** FIREBASE AUTH/SESSION ROUTES **********
+// Session start route
 router.route('/login-session')
   .post(validateSession, setUserClaims, sessionStart)
 
+// Set claims for firebase user account (regUser vs admin)
 router.route('/set-claims')
   .post(validateSession, setUserClaims)
 
+// Disable user account
+router.route('/disable-user')
+  .post(disableUser);
 // ********** FIRE STORE DATABASE ROUTES **********
 
 ///// TEST ROUTE FOR FIREBASE TOKEN /////

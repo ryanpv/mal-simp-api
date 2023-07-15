@@ -25,6 +25,7 @@ const getCategoryData = async (req, res) => {
         //   }).catch(err => console.log(err))
       // console.log(`no cache hit for ${ req.originalUrl }`);
       // console.log(`snap return ${ JSON.stringify(snapReturn) }`);
+      // console.log('snap: ', snapReturn);
       if (snapReturn.length < 1) {
         res.status(200).send('No data available.');
       } else {

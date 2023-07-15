@@ -9,7 +9,7 @@ const fetchUserCategories = async (req, res) => {
       .get();
 
     const categoryList = await userCategories.docs.map((category) => category.data().categoryName);
-
+console.log('cats: ', categoryList)
     res.send(categoryList);
   } catch (err) {
     res.status(500).send(err)

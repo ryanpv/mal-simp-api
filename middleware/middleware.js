@@ -58,7 +58,7 @@ const getCode = async (req, res, next) => {
 
   res.cookie('pkce_cookie', pkceAuth, {
     httpOnly: true,
-    // secure: true
+    secure: process.env.NODE_ENV === 'production'
   })
 
   if (verifier === "" || challenger === "") {

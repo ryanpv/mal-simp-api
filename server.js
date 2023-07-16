@@ -6,14 +6,22 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 require('./firebase-config.js')
 const { db } = require('./firebase-config.js')
-
 const { FirestoreStore } = require('@google-cloud/connect-firestore')
 const functions = require('firebase-functions');
 const port = 6969;
+const rateLimit = require('express-rate-limit');
 
 // process.env.NODE_ENV = 'development' // change or comment out for PROD
 process.env.NODE_ENV = 'dev'
 
+
+// Rate limit all server requests to prevent brute force and DDOS
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes -> 100 requests
+  max: 100, 
+  message: "Request limit has been reached at this IP.",
+  store: new rateLimit.MemoryStore()
+});
 
 app.use(cors({ 
   // origin: true,
@@ -40,8 +48,7 @@ app.use(session({
   }),
 }));
 
-app.use(require("./routes/routing.js"));
-
+app.use(limiter, require("./routes/routing.js"));
 
 if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
     app.listen(port, () => {

@@ -1,4 +1,4 @@
-# MAL-Simplified - a MyAnimeList project
+# WorldAnime (MAL-Simplified) - a MyAnimeList project
 
 As someone who enjoys anime and is always looking for a new show to watch, I wanted to create a project that had something to do with anime. I believe that the original MyAnimeList(MAL).net is a fantastic site to get all your anime information, but I wanted to simplify it a bit more. The idea of MAL-Simplified is to be focused solely on anime titles rather than including manga, anime news, etc. Users would be able to quicky search any anime available on the MAL database and view basic information such as scores, synopsis, and trailers.
 

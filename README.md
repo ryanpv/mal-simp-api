@@ -17,7 +17,6 @@ To check out the live space, visit [Mal-Simplified](https://mal-simplified.web.a
 * Remove anime titles from any saved lists
 * Paginate through all content lists
 * Error handling for bad requests/server errors
-* 
 
 ## Technologies
 

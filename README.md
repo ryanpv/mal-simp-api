@@ -4,6 +4,8 @@ As someone who enjoys anime and is always looking for a new show to watch, I wan
 
 To check out the live site, visit [WorldAnime](https://mal-simplified.web.app/)
 
+![WorldAnime-Screenshot](https://github.com/ryanpv/mal-simp/blob/main/public/WorldAnime-Screenshot.jpg)
+
 ## Features
 * View top upcoming anime, top airing anime, seasonal anime (can query different seasons)
 * View trailers through a modal by clicking on the anime poster

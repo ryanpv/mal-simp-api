@@ -77,24 +77,24 @@ jobs:
           eslint: true
           continue_on_error: false
 
-  deploy:
-    needs: lint
-    name: Deploy code
-    runs-on: ubuntu-latest
+  # deploy:
+  #   needs: lint
+  #   name: Deploy code
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v3
 
-      - name: Install latest NPM
-        run: npm i -g npm@latest
+  #     - name: Install latest NPM
+  #       run: npm i -g npm@latest
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+  #     - name: Install dependencies
+  #       uses: bahmutov/npm-install@v1
 
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with: 
-          args: deploy --only functions:api
-        env: 
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+  #     - name: Deploy to Firebase
+  #       uses: w9jds/firebase-action@master
+  #       with: 
+  #         args: deploy --only functions:api
+  #       env: 
+  #         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

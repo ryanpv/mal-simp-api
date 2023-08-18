@@ -1,7 +1,7 @@
 const admin = require('firebase-admin')
 const serviceAccount = require('./serviceAccount')
-console.log('env config: ', process.env.FIRESTORE_EMULATOR_HOST);
-console.log('projectid: ', serviceAccount.project_id);
+console.log('firebase env config: ', process.env.FIRESTORE_EMULATOR_HOST);
+console.log('firebase projectid: ', serviceAccount.project_id);
 
 admin.initializeApp({
   projectId: serviceAccount.project_id,

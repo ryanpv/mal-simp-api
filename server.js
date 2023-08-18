@@ -12,16 +12,7 @@ const port = 6969;
 const rateLimit = require('express-rate-limit');
 
 // process.env.NODE_ENV = 'development' // change or comment out for PROD
-process.env.NODE_ENV = 'dev'
-
-
-// Rate limit all server requests to prevent brute force and DDOS
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes -> 100 requests
-  max: 100, 
-  message: "Request limit has been reached at this IP.",
-  store: new rateLimit.MemoryStore()
-});
+// process.env.NODE_ENV = 'dev'
 
 app.use(cors({ 
   // origin: true,
@@ -35,6 +26,15 @@ app.use(cors({
   ],
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE' }));
+
+// Rate limit all server requests to prevent brute force and DDOS
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000000, // 15 minutes -> 100 requests
+  max: 100, 
+  message: "Request limit has been reached at this IP.",
+  store: new rateLimit.MemoryStore()
+});
+
 
 app.use(express.json());
 app.use(cookieParser());

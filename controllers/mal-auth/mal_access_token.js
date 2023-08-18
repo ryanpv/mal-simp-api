@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const getMalAccessToken = async (req, res) => {
+const getMalAccessToken = async (req, res, next) => {
   try {
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -11,10 +11,10 @@ const getMalAccessToken = async (req, res) => {
       client_secret: process.env.MAL_CLIENT_SECRET,
       grant_type: 'authorization_code',
       code: req.query.code,
-      redirect_uri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/logcallback' : 'https://mal-simplified.web.app/logcallback',
+      redirect_uri: process.env.NODE_ENV === 'production' ? 'https://mal-simplified.web.app/logcallback' : 'http://localhost:3000/logcallback',
       code_verifier: req.cookies.pkce_cookie.challenger
     };
-    const malAuth = await axios.post('https://myanimelist.net/v1/oauth2/token', data, { headers: headers })
+    const malAuth = await axios.post('https://myanimelist.net/v1/oauth2/token', data, { headers: headers });
 
     res.cookie('mal_access_token', malAuth.data, {
       httpOnly: 'true',
@@ -24,8 +24,8 @@ const getMalAccessToken = async (req, res) => {
     if (req.cookies.mal_access_token) {
       req.malCookie = malAuth.access_token
     }
-
-    res.end();
+    
+    next()
   } catch (err) {
     res.status(500).send(err);
   }

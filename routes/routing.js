@@ -78,9 +78,9 @@ router.route('/callback')
 
     // console.log('***redirected code***', pkceAuth.challenger);
   });
-
+// ********** GET MAL TOKEN AND USERNAME ***********
 router.route('/mal-auth')
-  .post(getMalAccessToken);
+  .post(getMalAccessToken, getMalUsername);
 
 
 /////// CLEAR COOKIE TO REMOVE MAL TOKEN //////////////
@@ -105,9 +105,9 @@ router.route('/token-test')
 router.route('/mal-token-test')
   .get(checkMalToken, (req, res) => res.status(200).send('MAL token VERIFIED'));
 
-  ///////// MAL USERNAME /////////
-router.route('/get-mal-username')
-  .get(checkMalToken, getMalUsername);
+  ///////// MAL USERNAME ///////// *** CURRENTLY UNUSED ROUTE
+// router.route('/get-mal-username')
+//   .get(checkMalToken, getMalUsername);
 
  //////////GET USER LIST
 

@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const getMalUsername = async (req, res) => {
   try {
+    console.log('mal username check');
     const malToken = req.cookies.mal_access_token;
     if (!malToken) {
       res.status(401).send('No MAL token')

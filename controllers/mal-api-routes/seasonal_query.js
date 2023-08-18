@@ -6,7 +6,7 @@ const querySeasonalAnime = async (req, res) => {
     if (!req.params.year || !req.params.season || parseInt(req.params.year) === typeof NaN) throw new Error('Missing seasonal query parameters');
 
     const seasonalQuery = await 
-      axios.get(`https://api.myanimelist.net/v2/anime/season/${ req.params.year }/${ req.params.season }?limit=8&offset=${ req.params.offset }&fields=num_episodes,mean,synopsis,status`, {
+      axios.get(`https://api.myanimelist.net/v2/anime/season/${ req.params.year }/${ req.params.season }?limit=10&offset=${ req.params.offset }&fields=num_episodes,mean,synopsis,status`, {
         headers: {
           'X-MAL-CLIENT-ID': process.env.MAL_CLIENT_ID
         }

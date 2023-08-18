@@ -7,14 +7,14 @@ const getMalSavedList = async (req, res) => {
       res.status(401).send('No MAL token')
     } else {
       const getUserAnimeList = await 
-        axios.get(`https://api.myanimelist.net/v2/users/@me/animelist?fields=mean,synopsis,status,videos,num_episodes&offset=${ req.params.offset }&limit=8`, 
+        axios.get(`https://api.myanimelist.net/v2/users/@me/animelist?fields=mean,synopsis,status,videos,num_episodes&offset=${ req.params.offset }&limit=10`, 
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization':`Bearer ${ malToken && malToken.access_token }` 
           }
         });
-      
+
       res.send(getUserAnimeList.data);
     }
   } catch (err) {

@@ -29,7 +29,7 @@ app.use(cors({
 
 // Rate limit all server requests to prevent brute force and DDOS
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000000, // 15 minutes -> 100 requests
+  windowMs: 15 * 60 * 1000, // 15 minutes -> 100 requests
   max: 100, 
   message: "Request limit has been reached at this IP.",
   store: new rateLimit.MemoryStore()

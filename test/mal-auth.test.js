@@ -13,7 +13,7 @@ describe("MAL-auth tests", () => {
       sinon.restore();
     });
   
-    it("Successful getMalAccessToken() request should set cookie with token data", async () => {
+    it("Successful getMalAccessToken() request should set COOKIE with token data", async () => {
       const req = {
         query: {
           code: {},
@@ -26,26 +26,29 @@ describe("MAL-auth tests", () => {
           mal_access_token: true,
         },
       };
-      const end = sinon.spy();
+      const next = sinon.spy();
       const send = sinon.spy();
-      const cookie = sinon.stub();
+      const status = sinon.stub();
+      const cookie = sinon.spy();
       const res = {
-        end,
         send,
+        status,
         cookie,
       };
-      const data = {};
+      status.returns(res)
+      const data = {'cookie': 'testdata'}
       const malAuth = sinon.stub(axios, 'post').returns(data);
   
-      await malTokenModule.getMalAccessToken(req, res);
+      await malTokenModule.getMalAccessToken(req, res, next);
       
       expect(res.cookie.calledWith('mal_access_token', malAuth.data, {
-        httpOnly: 'true'
+        httpOnly: 'true',
+        secure: process.env.NODE_ENV === 'production'
       })).to.be.true;
-      expect(res.end.called).to.be.true;
+      expect(next.calledOnce).to.be.true;
     });
   
-    it("Should set req header 'req.malCookie' with access token", async () => {
+    it("Should set req HEADER 'req.malCookie' with access token", async () => {
       const req = {
         query: {
           code: {},
@@ -63,20 +66,21 @@ describe("MAL-auth tests", () => {
       const cookie = sinon.stub();
       const status = sinon.stub();
       const res = {
-        next,
         send,
         cookie,
         status,
       };
+
+      status.returns(res)
       const mockData = { access_token: 'test token 123' };
       const malAuth = sinon.stub(axios, 'post').returns(mockData);
   
-      await malTokenModule.getMalAccessToken(req, res);
+      await malTokenModule.getMalAccessToken(req, res, next);
   
       // axios request should return an access_token object
       expect(malAuth()).to.have.property('access_token');
       expect(malAuth().access_token).to.not.be.undefined; 
-      expect(next.called).to.be.true;
+      expect(next.calledOnce).to.be.true;
     });
   
     it("getMalAccessToken() error should be caught, status 500 and err should be sent", async () => {
@@ -92,12 +96,12 @@ describe("MAL-auth tests", () => {
           mal_access_token: true,
         },
       };
-      const end = sinon.spy();
+      // const end = sinon.spy();
       const send = sinon.spy();
       const cookie = sinon.stub();
       const status = sinon.stub();
       const res = {
-        end,
+        // end,
         send,
         cookie,
         status,

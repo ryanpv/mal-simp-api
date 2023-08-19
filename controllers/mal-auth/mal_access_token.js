@@ -15,7 +15,7 @@ const getMalAccessToken = async (req, res, next) => {
       code_verifier: req.cookies.pkce_cookie.challenger
     };
     const malAuth = await axios.post('https://myanimelist.net/v1/oauth2/token', data, { headers: headers });
-
+console.log("mal auth:", malAuth);
     res.cookie('mal_access_token', malAuth.data, {
       httpOnly: 'true',
       secure: process.env.NODE_ENV === 'production'

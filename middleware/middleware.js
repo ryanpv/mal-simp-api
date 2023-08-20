@@ -76,6 +76,7 @@ const verifyFirebaseToken = async (req, res, next) => {
 
     if (isAuthenticated && userRole === 'admin' || isAuthenticated && userRole === 'regUser') {
       // user is fully authenticated
+
       next();
     } else {
       req.session.destroy();

@@ -13,7 +13,7 @@ const rateLimit = require('express-rate-limit');
 
 // process.env.NODE_ENV = 'development' // change or comment out for PROD
 // process.env.NODE_ENV = 'dev'
-
+app.use(cookieParser());
 app.use(cors({ 
   // origin: true,
   origin: [
@@ -37,7 +37,7 @@ const limiter = rateLimit({
 
 
 app.use(express.json());
-app.use(cookieParser());
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,

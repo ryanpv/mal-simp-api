@@ -6,7 +6,7 @@ const getCategoryData = async (req, res) => {
     const result = validationResult(req);
     if (result.isEmpty()) {
       const collectionName = process.env.NODE_ENV === 'dev' ? 'test-mal-simp' : 'mal-simp'
-  
+
       const categorySnapshot = await db.collection(collectionName)
         .where('userId', '==', req.session.uid)
         .where('categoryName', '==', req.params.categoryName)

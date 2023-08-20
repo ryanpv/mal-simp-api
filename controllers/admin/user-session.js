@@ -14,9 +14,8 @@ const sessionStart = async (req, res) => {
       req.session.user = verifiedToken.email;
       // req.session.displayName = verifiedToken.displayName;
       req.session.uid = verifiedToken.uid;
-      req.session.accessToken = verifiedToken.accessToken;
-      // console.log('session: ', req.session);
-  
+      // req.session.accessToken = verifiedToken.accessToken;
+
       // Set cookie to identify user role right on login
       if (isAdmin) {
         res.cookie('userRole', 'admin', { httpOnly: false });

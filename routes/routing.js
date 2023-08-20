@@ -86,9 +86,10 @@ router.route('/mal-auth')
 /////// CLEAR COOKIE TO REMOVE MAL TOKEN //////////////
 router.route('/clear-mal-cookie')
   .get(async function (req, res) {
+    res.clearCookie('pkce_cookie');
     res.clearCookie('mal_access_token');
     res.cookie('userRole', 'null', { httpOnly: false })
-
+    req.session.destroy();
     res.end();
   });
 
@@ -132,6 +133,18 @@ router.route('/set-claims')
 // Disable user account
 router.route('/disable-user')
   .post(disableUser);
+
+// Log out route
+router.route('/logout')
+  .delete((req, res) => {
+    console.log('user logging out');
+    res.clearCookie('pkce_cookie');
+    res.clearCookie('mal_access_token');
+    req.session.destroy();
+
+    res.end();
+  });
+
 // ********** FIRE STORE DATABASE ROUTES **********
 
 ///// TEST ROUTE FOR FIREBASE TOKEN /////

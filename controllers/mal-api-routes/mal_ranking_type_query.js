@@ -11,8 +11,9 @@ const animeRankingQuery = async (req, res) => {
         }
       });
 
-    res.send(getAnimeRanking.data);
+      res.send(getAnimeRanking.data);
   } catch (err) {
+    console.log("rank error: ", err);
     res.status(400).send(err)
   }
 };

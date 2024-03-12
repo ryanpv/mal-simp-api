@@ -6,7 +6,7 @@ To check out the live site, visit [WorldAnime](https://mal-simplified.web.app/)
 
 If you'd like to take a look at the front-end source code, go to [mal-simp](https://github.com/ryanpv/mal-simp)
 
-![WorldAnime-Screenshot](https://github.com/ryanpv/mal-simp/blob/main/public/WorldAnime-Screenshot.jpg)
+![WorldAnime-Screenshot](https://github.com/ryanpv/mal-simp/blob/main/public/WorldAnime-SS.png)
 
 ## Features
 * View top upcoming anime, top airing anime, seasonal anime (can query different seasons)
